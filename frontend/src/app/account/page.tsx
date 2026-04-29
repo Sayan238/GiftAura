@@ -158,7 +158,7 @@ export default function UserDashboard() {
                       <motion.div
                         key={order.id}
                         variants={itemVariants}
-                        whileHover={{ y: -4, shadow: 'lg' }}
+                        whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
                         className="border border-gray-100 rounded-2xl p-6 hover:shadow-lg hover:border-primary/30 transition-all group bg-gradient-to-br from-white to-gray-50"
                       >
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100">
