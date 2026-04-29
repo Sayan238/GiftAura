@@ -172,7 +172,29 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center space-x-3 md:hidden">
+            <Link href="/search" className="text-gray-600 p-2">
+              <Search className="h-5 w-5" />
+            </Link>
+            <Link href="/wishlist" className="text-gray-600 p-2 relative">
+              <Heart className="h-5 w-5" />
+              {wishlistTotal > 0 && (
+                <span className="absolute top-1 right-1 bg-rose-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                  {wishlistTotal}
+                </span>
+              )}
+            </Link>
+            <Link href="/account" className="text-gray-600 p-2">
+              <User className="h-5 w-5" />
+            </Link>
+            <Link href="/cart" className="text-gray-600 p-2 relative">
+              <ShoppingBag className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute top-1 right-1 bg-secondary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500"
@@ -238,6 +260,81 @@ export default function Navbar() {
             </div>
           ))}
         </div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+            >
+              <div className="px-4 pt-4 pb-6 space-y-4">
+                {/* Mobile Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearch}
+                    placeholder="Search gifts..."
+                    className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                {/* Categories */}
+                <div className="space-y-1">
+                  {CATEGORIES.map((category) => (
+                    <div key={category.name} className="py-2">
+                      <Link
+                        href={category.link}
+                        onClick={() => setIsOpen(false)}
+                        className="block px-3 py-2 text-base font-bold text-gray-900 hover:bg-gray-50 rounded-lg"
+                      >
+                        {category.name}
+                      </Link>
+                      <div className="pl-4 mt-1 grid grid-cols-2 gap-2">
+                        {category.sub.map((sub) => (
+                          <Link
+                            key={sub.name}
+                            href={category.name === 'Occasions' 
+                              ? `/occasion/${sub.name.toLowerCase().replace(/\s+/g, '-')}` 
+                              : `/category/${sub.name.toLowerCase().replace(/\s+/g, '-')}`
+                            }
+                            onClick={() => setIsOpen(false)}
+                            className="text-sm text-gray-500 py-1 hover:text-primary transition-colors"
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Additional Links */}
+                <div className="pt-4 border-t border-gray-100 space-y-2">
+                  <Link
+                    href="/account"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-3 px-3 py-2 text-gray-700 font-medium hover:bg-gray-50 rounded-lg"
+                  >
+                    <User className="h-5 w-5 text-gray-400" />
+                    <span>My Profile</span>
+                  </Link>
+                  <Link
+                    href="/wishlist"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-3 px-3 py-2 text-gray-700 font-medium hover:bg-gray-50 rounded-lg"
+                  >
+                    <Heart className="h-5 w-5 text-gray-400" />
+                    <span>Wishlist</span>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );
