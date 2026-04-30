@@ -6,7 +6,7 @@ export const getProducts = async (req: Request, res: Response) => {
     const keyword = req.query.keyword
       ? {
           name: {
-            $regex: req.query.keyword,
+            $regex: req.query.keyword as string,
             $options: 'i',
           },
         }
