@@ -1,6 +1,7 @@
 "use client";
-import React from 'react';
+import React, { memo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -19,7 +20,7 @@ interface ProductCardProps {
   };
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const wishlisted = isInWishlist(product.id);
@@ -50,84 +51,90 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-200 group relative flex flex-col h-full">
-      <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+    <div className="bg-white rounded-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 group relative flex flex-col h-full p-2">
+      <div className="absolute top-4 left-4 z-10 flex flex-col gap-1">
         {product.discount && (
-          <span className="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
+          <span className="bg-red-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-sm shadow-sm">
             {product.discount}% OFF
-          </span>
-        )}
-        {product.isNew && (
-          <span className="bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
-            NEW
           </span>
         )}
       </div>
       
       <button
         onClick={handleToggleWishlist}
-        className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all flex items-center justify-center ${
+        className={`absolute top-4 right-4 z-10 p-2 rounded-full transition-all flex items-center justify-center shadow-md ${
           wishlisted
-            ? 'bg-white/90 text-red-500'
-            : 'bg-white/90 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100'
+            ? 'bg-white text-red-500'
+            : 'bg-white text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100'
         }`}
-        title={wishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
       >
         <Heart className={`h-4 w-4 ${wishlisted ? 'fill-current' : ''}`} />
       </button>
 
-      <Link href={`/product/${product.id}`}>
-        <div className="relative h-72 bg-gray-50 overflow-hidden flex items-center justify-center p-4">
-          {product.image ? (
-            <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300 mix-blend-multiply" />
-          ) : (
-            <div className="text-gray-300">
-               <img src={`https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500`} alt="Gift" className="w-full h-full object-cover opacity-80" />
-            </div>
-          )}
+      <Link href={`/product/${product.id}`} className="block overflow-hidden rounded-sm">
+        <div className="relative h-64 bg-white flex items-center justify-center">
+          <Image 
+            src={product.image || "https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500"}
+            alt={product.name}
+            fill
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
         </div>
       </Link>
       
-      <div className="p-4 flex flex-col flex-grow border-t border-gray-100">
+      <div className="pt-4 pb-2 px-2 flex flex-col flex-grow">
         <Link href={`/product/${product.id}`}>
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-primary transition-colors mb-1">
+          <h3 className="text-sm font-bold text-gray-900 line-clamp-2 hover:text-orange-600 transition-colors mb-1 leading-snug">
             {product.name}
           </h3>
         </Link>
         
         <div className="flex items-center space-x-1 mb-2">
-          <div className="flex text-yellow-400">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="flex text-yellow-500">
+            {[...Array(5)].map((_, i) => (
               <Star key={i} className={`h-3 w-3 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-gray-200'}`} />
             ))}
           </div>
-          <span className="text-xs text-blue-600 hover:text-orange-500 cursor-pointer ml-1">{product.reviews}</span>
+          <span className="text-[12px] text-blue-600 hover:text-orange-600 font-medium">({product.reviews})</span>
         </div>
         
-        <div className="mt-auto mb-3">
-          <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-gray-900">₹{product.price}</span>
+        <div className="mt-auto">
+          <div className="flex items-baseline gap-2 mb-1">
+            <span className="text-2xl font-bold text-gray-900">₹{product.price}</span>
             {product.originalPrice && (
-              <span className="text-xs text-gray-500 line-through">₹{product.originalPrice}</span>
-            )}
-            {product.discount && (
-              <span className="text-xs text-green-600 font-medium">({product.discount}% off)</span>
+              <span className="text-sm text-gray-500 line-through">M.R.P: ₹{product.originalPrice}</span>
             )}
           </div>
-          <div className="mt-1 space-y-0.5">
-            <p className="text-[11px] text-gray-500">Get it by <span className="font-bold text-gray-900">Tomorrow</span></p>
-            <p className="text-[11px] text-gray-500">FREE Delivery by GiftAura</p>
+          
+          <div className="space-y-1 mb-4">
+            <p className="text-[12px] text-gray-700">Get it by <span className="font-bold">Tomorrow</span></p>
+            <p className="text-[12px] text-gray-600 italic">FREE Delivery by GiftAura</p>
           </div>
         </div>
         
-        <button
-          onClick={handleAddToCart}
-          className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium py-2 px-4 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm"
-          title="Add to Cart"
-        >
-          <ShoppingCart className="h-4 w-4" /> Add to Cart
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleAddToCart}
+            className="flex-1 bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 text-[13px] font-bold py-2 rounded-full transition-all shadow-sm border border-[#fcd200]"
+          >
+            Add to Cart
+          </button>
+          <button
+            className="flex-1 bg-[#ffa41c] hover:bg-[#fa8900] text-gray-900 text-[13px] font-bold py-2 rounded-full transition-all shadow-sm border border-[#ee9100]"
+          >
+            Buy Now
+          </button>
+        </div>
       </div>
     </div>
+
   );
 }
+
+export default memo(ProductCard, (prevProps, nextProps) => {
+  return prevProps.product.id === nextProps.product.id &&
+         prevProps.product.price === nextProps.product.price &&
+         prevProps.product.rating === nextProps.product.rating;
+});

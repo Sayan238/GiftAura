@@ -13,7 +13,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 999,
     discount: 40,
     rating: 4.8,
-    image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=500',
     stock: 8,
   },
   {
@@ -23,7 +23,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 850,
     discount: 41,
     rating: 4.9,
-    image: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=500',
     stock: 12,
   },
   {
@@ -33,7 +33,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 349,
     discount: 43,
     rating: 4.6,
-    image: 'https://images.pexels.com/photos/1028714/pexels-photo-1028714.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.unsplash.com/photo-1512203530485-25a218a5da4c?auto=format&fit=crop&q=80&w=500',
     stock: 25,
   },
   {
@@ -43,7 +43,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 549,
     discount: 36,
     rating: 4.4,
-    image: 'https://images.pexels.com/photos/1457801/pexels-photo-1457801.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=500',
     stock: 5,
   },
   {
@@ -53,7 +53,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 899,
     discount: 33,
     rating: 4.6,
-    image: 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&q=80&w=500',
     stock: 18,
   },
   {
@@ -63,10 +63,11 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 549,
     discount: 27,
     rating: 4.5,
-    image: 'https://images.pexels.com/photos/1449729/pexels-photo-1449729.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=500',
     stock: 14,
   },
 ];
+
 
 interface TimeLeft {
   hours: number;

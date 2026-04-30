@@ -21,7 +21,12 @@ export default function RootLayout({
         <CartProvider>
           <WishlistProvider>
             <Navbar />
-            <main className="flex-grow pt-20">
+            <main className="flex-grow pt-[210px]">
+
+
+
+
+
               {children}
             </main>
             <Footer />

@@ -3,12 +3,22 @@ import Product from '../models/Product';
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find({});
+    const keyword = req.query.keyword
+      ? {
+          name: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
+        }
+      : {};
+
+    const products = await Product.find({ ...keyword });
     res.json(products);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getProductById = async (req: Request, res: Response) => {
   try {

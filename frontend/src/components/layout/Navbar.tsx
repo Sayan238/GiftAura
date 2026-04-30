@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, ShoppingBag, User, Heart, Menu, X, ChevronDown } from 'lucide-react';
+import { Search, ShoppingBag, User, Heart, Menu, X, ChevronDown, Sparkles, ArrowRight } from 'lucide-react';
+
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -68,15 +70,29 @@ export default function Navbar() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  // Flatten categories into searchable terms
-  const allSuggestions = CATEGORIES.flatMap(c => 
-    [c.name, ...c.sub.map(s => s.name)]
-  );
+  // Fetch dynamic suggestions from backend
+  React.useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (searchQuery.length < 2) {
+        setSuggestions([]);
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:5000/api/products?keyword=${searchQuery}`);
+        const data = await response.json();
+        // Extract unique product names or categories
+        const results = data.map((p: any) => p.name).slice(0, 8);
+        setSuggestions(results);
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+      }
+    };
 
-  const filteredSuggestions = allSuggestions.filter(s => 
-    s.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 5); // Max 5 suggestions
+    const debounce = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(debounce);
+  }, [searchQuery]);
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
@@ -86,6 +102,7 @@ export default function Navbar() {
     }
   };
 
+
   const handleSuggestionClick = (suggestion: string) => {
     setShowSuggestions(false);
     setSearchQuery('');
@@ -93,249 +110,291 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed w-full z-50 glass-effect transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-primary tracking-tight">GiftAura</span>
+    <>
+      <div className="fixed w-full z-[9999] top-0 shadow-2xl">
+        {/* Main Header */}
+        <nav className="bg-[#121212] text-white border-b border-white/5 py-4 relative">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4 md:gap-12">
+          {/* Left: Hamburger & Logo */}
+          <div className="flex items-center gap-4 relative z-[10010]">
+            <button 
+              onClick={() => setIsOpen(true)}
+              className="lg:hidden p-2 hover:bg-white/5 rounded-full transition-colors"
+            >
+              <Menu className="h-6 w-6 text-white" />
+            </button>
+            <Link 
+              href="/" 
+              className="flex-shrink-0 group block cursor-pointer transition-all hover:opacity-80"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen(false);
+                router.push('/');
+              }}
+            >
+              <div className="flex flex-col items-start leading-tight">
+                <span className="text-xl md:text-2xl font-black text-white tracking-tighter group-hover:text-secondary transition-colors">GiftAura</span>
+                <span className="text-[8px] md:text-[10px] text-secondary font-bold tracking-[0.2em] uppercase">Premium Gifting</span>
+              </div>
             </Link>
           </div>
 
-          <div className="hidden md:flex flex-1 max-w-xl mx-8">
-            <div className="relative w-full">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+
+          {/* Center: Search Bar (Desktop Only) */}
+          <div className="hidden lg:flex items-center gap-12 flex-1 max-w-4xl">
+            {/* Category Links */}
+            <div className="flex items-center gap-6">
+              {CATEGORIES.map((cat) => (
+                <div 
+                  key={cat.name}
+                  className="relative group py-2"
+                  onMouseEnter={() => setActiveMenu(cat.name)}
+                  onMouseLeave={() => setActiveMenu(null)}
+                >
+                  <Link 
+                    href={cat.link} 
+                    className={`flex items-center gap-1 text-[13px] font-black tracking-tight transition-colors ${activeMenu === cat.name ? 'text-secondary' : 'text-gray-300 hover:text-white'}`}
+                  >
+                    {cat.name}
+                    <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${activeMenu === cat.name ? 'rotate-180' : ''}`} />
+                  </Link>
+
+                  <AnimatePresence>
+                    {activeMenu === cat.name && (
+                      <>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[9999] pointer-events-none"
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 15 }}
+                          className="absolute top-full left-0 pt-4 z-[10001]"
+                        >
+                          <div className="bg-white text-black shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2rem] p-8 min-w-[500px] border border-gray-100">
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+                              {cat.sub.map((sub) => (
+                                <Link key={sub.name} href="#" className="flex items-start gap-4 group/item">
+                                  <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-50 border border-gray-100">
+                                    <img src={sub.img} className="w-full h-full object-cover transition-transform duration-500 group-hover/item:scale-110" alt={sub.name} />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-[13px] font-black text-[#c5a028] group-hover/item:text-black transition-colors mb-0.5">{sub.name}</h4>
+                                    <p className="text-[11px] text-gray-500 leading-snug">{sub.desc}</p>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                            <div className="mt-8 pt-6 border-t border-gray-100 flex justify-center">
+                               <Link href={cat.link} className="text-xs font-black text-gray-900 hover:text-secondary transition-colors flex items-center gap-2 group/btn">
+                                  Explore all {cat.name} <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                               </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex-1 relative group mx-4">
+              <div className="relative flex items-center bg-white/5 border border-white/10 rounded-2xl px-6 py-3 focus-within:bg-white/10 focus-within:border-secondary/50 focus-within:ring-4 focus-within:ring-secondary/10 transition-all duration-500 backdrop-blur-md">
+                <Search className="h-5 w-5 text-gray-400 group-focus-within:text-secondary transition-colors" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onFocus={() => setShowSuggestions(true)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearch}
+                  placeholder="Search for perfection..."
+                  className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[15px] px-4 placeholder-gray-500 font-bold tracking-tight text-white"
+                />
               </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setShowSuggestions(e.target.value.length > 0);
-                }}
-                onFocus={() => { if(searchQuery) setShowSuggestions(true); }}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                onKeyDown={handleSearch}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm transition-shadow shadow-sm"
-                placeholder="Search for gifts, flowers, jewellery..."
-              />
+            </div>
+          </div>
+
+          {/* Right: Actions */}
+          <div className="flex items-center gap-2 md:gap-6">
+            <button 
+              onClick={() => setIsOpen(true)}
+              className="lg:hidden p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-all"
+            >
+              <Search className="h-5 w-5 text-gray-400" />
+            </button>
+
+            <div 
+              className="relative py-2 hidden sm:block"
+              onMouseEnter={() => setActiveMenu('account')}
+              onMouseLeave={() => setActiveMenu(null)}
+            >
+              <button className="flex items-center gap-2 text-[12px] md:text-sm font-bold hover:text-secondary transition-colors px-3 md:px-4 py-2 bg-white/5 rounded-full border border-white/10">
+                <User className="h-4 w-4" />
+                <span className="hidden md:inline">Account</span>
+              </button>
+              
               <AnimatePresence>
-                {showSuggestions && filteredSuggestions.length > 0 && (
+                {activeMenu === 'account' && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                    className="absolute top-full right-0 mt-2 w-64 bg-[#1a1a1a] text-white shadow-2xl rounded-2xl overflow-hidden border border-white/10 z-[10001]"
                   >
-                    <ul>
-                      {filteredSuggestions.map((suggestion, idx) => (
-                        <li key={idx}>
-                          <button
-                            onMouseDown={(e) => {
-                              e.preventDefault(); // Prevent blur
-                              handleSuggestionClick(suggestion);
-                            }}
-                            className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors flex items-center"
-                          >
-                            <Search className="h-4 w-4 mr-3 text-gray-400" />
-                            {suggestion}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="p-6 grid grid-cols-1 gap-4 text-sm">
+                       <Link href="/login" className="bg-secondary text-black text-center py-3 rounded-xl font-black hover:bg-secondary/90 transition-all">Sign In</Link>
+                       <div className="h-px bg-white/10 my-2"></div>
+                       <Link href="/account" className="flex items-center gap-3 hover:text-secondary transition-colors"><User className="h-4 w-4 text-gray-500"/> My Profile</Link>
+                       <Link href="/orders" className="flex items-center gap-3 hover:text-secondary transition-colors"><ShoppingBag className="h-4 w-4 text-gray-500"/> Your Orders</Link>
+                       <Link href="/wishlist" className="flex items-center gap-3 hover:text-secondary transition-colors"><Heart className="h-4 w-4 text-gray-500"/> Wishlist</Link>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-          </div>
 
-          <div className="hidden md:flex items-center space-x-6">
-            <Link href="/wishlist" className="text-gray-600 hover:text-primary transition-colors relative">
-              <Heart className="h-6 w-6" />
-              {wishlistTotal > 0 && (
-                <span className="absolute -top-2 -right-2 bg-rose-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {wishlistTotal}
-                </span>
-              )}
+            <Link href="/cart" className="relative group">
+              <div className="p-2 md:p-2.5 bg-secondary/10 rounded-full group-hover:bg-secondary/20 transition-all border border-secondary/20">
+                <ShoppingBag className="h-5 w-5 text-secondary" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-black rounded-full h-4 w-4 flex items-center justify-center border-2 border-[#121212]">
+                    {totalItems}
+                  </span>
+                )}
+              </div>
             </Link>
-            <Link href="/account" className="text-gray-600 hover:text-primary transition-colors">
-              <User className="h-6 w-6" />
-            </Link>
-            <Link href="/cart" className="text-gray-600 hover:text-primary transition-colors relative">
-              <ShoppingBag className="h-6 w-6" />
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-secondary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          </div>
-
-          <div className="flex items-center space-x-3 md:hidden">
-            <Link href="/search" className="text-gray-600 p-2">
-              <Search className="h-5 w-5" />
-            </Link>
-            <Link href="/wishlist" className="text-gray-600 p-2 relative">
-              <Heart className="h-5 w-5" />
-              {wishlistTotal > 0 && (
-                <span className="absolute top-1 right-1 bg-rose-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                  {wishlistTotal}
-                </span>
-              )}
-            </Link>
-            <Link href="/account" className="text-gray-600 p-2">
-              <User className="h-5 w-5" />
-            </Link>
-            <Link href="/cart" className="text-gray-600 p-2 relative">
-              <ShoppingBag className="h-5 w-5" />
-              {totalItems > 0 && (
-                <span className="absolute top-1 right-1 bg-secondary text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
           </div>
         </div>
+      </nav>
 
-        <div className="hidden md:flex space-x-8 pb-3 justify-center pt-3 border-t border-gray-100">
-          {CATEGORIES.map((category) => (
-            <div
-              key={category.name}
-              className="relative group"
-              onMouseEnter={() => setActiveMenu(category.name)}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <Link
-                href={category.link}
-                className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
-              >
-                {category.name}
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </Link>
-
-              <AnimatePresence>
-                {activeMenu === category.name && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-1/2 transform -translate-x-1/2 mt-3 w-[500px] rounded-3xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 z-50 overflow-hidden"
-                  >
-                    <div className="p-6 grid grid-cols-2 gap-4">
-                      {category.sub.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={category.name === 'Occasions' 
-                            ? `/occasion/${subItem.name.toLowerCase().replace(/\s+/g, '-')}` 
-                            : `/category/${subItem.name.toLowerCase().replace(/\s+/g, '-')}`
-                          }
-                          className="group flex items-center p-3 rounded-2xl hover:bg-gray-50 transition-colors"
-                        >
-                          <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100 mr-4 border border-gray-100">
-                            <img src={subItem.img} alt={subItem.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-gray-900 group-hover:text-primary transition-colors text-sm">{subItem.name}</h4>
-                            <p className="text-xs text-gray-500 font-medium line-clamp-1">{subItem.desc}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="bg-gray-50 p-4 text-center border-t border-gray-100">
-                      <Link href={category.link} className="text-sm font-bold text-primary hover:text-[#c5a028] transition-colors relative inline-flex items-center group/link">
-                        Explore all {category.name} <ChevronDown className="h-4 w-4 ml-1 -rotate-90 group-hover/link:translate-x-1 transition-transform" />
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+      {/* Premium Category Icon Bar (Scrollable on mobile) */}
+      <div className="bg-white border-b border-gray-100 shadow-sm relative">
+        <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-start lg:justify-between overflow-x-auto whitespace-nowrap scrollbar-hide gap-2">
+          {[
+            { name: 'Luxury Gifts', id: 'gifts', img: 'https://cdn-icons-png.flaticon.com/128/679/679821.png', link: '/category/gifts' },
+            { name: 'Fresh Blooms', id: 'flowers', img: 'https://cdn-icons-png.flaticon.com/128/346/346167.png', link: '/category/flowers' },
+            { name: 'Artisan Cakes', id: 'cakes', img: 'https://cdn-icons-png.flaticon.com/128/2682/2682414.png', link: '/category/cakes' },
+            { name: 'Fine Jewellery', id: 'jewellery', img: 'https://cdn-icons-png.flaticon.com/128/2856/2856811.png', link: '/category/jewellery' },
+            { name: 'Personalized', id: 'personalized', img: 'https://cdn-icons-png.flaticon.com/128/1170/1170628.png', link: '/category/personalized' },
+            { name: 'Luxe Combos', id: 'combos', img: 'https://cdn-icons-png.flaticon.com/128/4290/4290858.png', link: '/category/combos' },
+            { name: 'Birthday', id: 'birthday', img: 'https://cdn-icons-png.flaticon.com/128/2413/2413074.png', link: '/category/birthday' },
+            { name: 'Anniversary', id: 'anniversary', img: 'https://cdn-icons-png.flaticon.com/128/4151/4151351.png', link: '/category/anniversary' }
+          ].map((cat) => (
+            <Link key={cat.name} href={cat.link} className="flex flex-col items-center gap-1.5 px-4 min-w-[90px] transition-all group">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gray-50 flex items-center justify-center transition-all group-hover:bg-[#121212] group-hover:shadow-xl group-hover:-translate-y-1">
+                <img src={cat.img} alt={cat.name} className="w-6 h-6 md:w-7 md:h-7 object-contain transition-all group-hover:invert group-hover:scale-110" />
+              </div>
+              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-wider text-gray-500 group-hover:text-[#121212] transition-colors">{cat.name}</span>
+            </Link>
           ))}
         </div>
-        <AnimatePresence>
-          {isOpen && (
+      </div>
+    </div>
+
+      {/* Mobile Drawer (Sidebar) - Outside navbar container */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="lg:hidden fixed inset-0 bg-black/60 z-[99998] backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="lg:hidden fixed inset-y-0 left-0 w-[300px] bg-white shadow-2xl z-[99999] overflow-y-auto"
             >
-              <div className="px-4 pt-4 pb-6 space-y-4">
-                {/* Mobile Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              {/* Header */}
+              <div className="bg-[#121212] text-white p-6 relative">
+                <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white transition-colors">
+                  <X className="h-6 w-6" />
+                </button>
+                <div className="flex items-center gap-4 mt-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/10">
+                    <User className="h-6 w-6 text-secondary" />
+                  </div>
+                  <div>
+                    <h2 className="font-black text-lg">Hello, Sign In</h2>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-widest">Premium Gifting</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Search Inside Drawer */}
+              <div className="p-6 border-b border-gray-100">
+                <div className="relative flex items-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5">
+                  <Search className="h-4 w-4 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearch}
+                    onKeyDown={(e) => {
+                       if (e.key === 'Enter') {
+                          setIsOpen(false);
+                          router.push(`/search?q=${searchQuery}`);
+                       }
+                    }}
                     placeholder="Search gifts..."
-                    className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm px-3 placeholder-gray-400 font-bold"
                   />
                 </div>
+              </div>
 
-                {/* Categories */}
-                <div className="space-y-1">
-                  {CATEGORIES.map((category) => (
-                    <div key={category.name} className="py-2">
-                      <Link
-                        href={category.link}
-                        onClick={() => setIsOpen(false)}
-                        className="block px-3 py-2 text-base font-bold text-gray-900 hover:bg-gray-50 rounded-lg"
-                      >
-                        {category.name}
-                      </Link>
-                      <div className="pl-4 mt-1 grid grid-cols-2 gap-2">
-                        {category.sub.map((sub) => (
-                          <Link
-                            key={sub.name}
-                            href={category.name === 'Occasions' 
-                              ? `/occasion/${sub.name.toLowerCase().replace(/\s+/g, '-')}` 
-                              : `/category/${sub.name.toLowerCase().replace(/\s+/g, '-')}`
-                            }
-                            onClick={() => setIsOpen(false)}
-                            className="text-sm text-gray-500 py-1 hover:text-primary transition-colors"
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
-                      </div>
+              {/* Categories */}
+              <div className="p-6 space-y-8">
+                {CATEGORIES.map((category) => (
+                  <div key={category.name} className="space-y-4">
+                    <Link
+                      href={category.link}
+                      onClick={() => setIsOpen(false)}
+                      className="text-lg font-black text-gray-900 flex items-center justify-between group"
+                    >
+                      {category.name}
+                      <ArrowRight className="h-4 w-4 text-secondary group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                    <div className="grid grid-cols-1 gap-3 pl-2">
+                      {category.sub.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href="#"
+                          onClick={() => setIsOpen(false)}
+                          className="text-sm text-gray-500 font-bold hover:text-secondary transition-colors"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
 
-                {/* Additional Links */}
-                <div className="pt-4 border-t border-gray-100 space-y-2">
-                  <Link
-                    href="/account"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center space-x-3 px-3 py-2 text-gray-700 font-medium hover:bg-gray-50 rounded-lg"
-                  >
-                    <User className="h-5 w-5 text-gray-400" />
-                    <span>My Profile</span>
-                  </Link>
-                  <Link
-                    href="/wishlist"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center space-x-3 px-3 py-2 text-gray-700 font-medium hover:bg-gray-50 rounded-lg"
-                  >
-                    <Heart className="h-5 w-5 text-gray-400" />
-                    <span>Wishlist</span>
-                  </Link>
+              {/* Bottom Actions */}
+              <div className="p-6 bg-gray-50 mt-auto border-t border-gray-100 space-y-4">
+                <Link href="/login" className="block w-full bg-[#121212] text-white text-center py-4 rounded-xl font-black text-sm transition-all hover:bg-black">Sign In</Link>
+                <div className="grid grid-cols-2 gap-3">
+                   <Link href="/orders" className="p-4 bg-white rounded-xl border border-gray-100 flex flex-col items-center gap-2 group">
+                      <ShoppingBag className="h-5 w-5 text-gray-400 group-hover:text-secondary transition-colors" />
+                      <span className="text-[10px] font-black uppercase text-gray-500">Orders</span>
+                   </Link>
+                   <Link href="/wishlist" className="p-4 bg-white rounded-xl border border-gray-100 flex flex-col items-center gap-2 group">
+                      <Heart className="h-5 w-5 text-gray-400 group-hover:text-secondary transition-colors" />
+                      <span className="text-[10px] font-black uppercase text-gray-500">Wishlist</span>
+                   </Link>
                 </div>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </nav>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

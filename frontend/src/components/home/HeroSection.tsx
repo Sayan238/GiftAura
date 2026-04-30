@@ -1,181 +1,269 @@
 "use client";
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Play, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
-export default function HeroSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
+const SLIDES = [
+  {
+    image: "/banner-purple.jpg",
+    tag: "Trending Birthday Gift",
+    title: <>Happy Birthday <br/><span className="text-secondary">Spa Bliss.</span></>,
+    desc: "Surprise her with the ultimate relaxation experience – our curated Birthday Spa Gift Basket."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?auto=format&fit=crop&q=80&w=1600",
+    tag: "Exclusive Hampers",
+    title: <>Luxe <br/><span className="text-secondary">Collections.</span></>,
+    desc: "Exquisite gift sets curated for the most special people in your life. Quality you can trust."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=1600",
+    tag: "Artisan Selection",
+    title: <>Sweet <br/><span className="text-secondary">Indulgence.</span></>,
+    desc: "Hand-crafted cakes and gourmet treats made with the finest Belgian chocolate and love."
+  },
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8 },
-    },
-  };
+  {
+    image: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=1600",
+    tag: "Freshly Picked",
+    title: <>Signature <br/><span className="text-secondary">Floral.</span></>,
+    desc: "Breathtaking arrangements that bring nature's beauty directly to their doorstep."
+  }
+];
+
+
+
+export default function HeroSection() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const next = () => setCurrent((prev) => (prev + 1) % SLIDES.length);
+  const prev = () => setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
 
   return (
-    <div className="relative bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden min-h-[700px] flex items-center">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 40, repeat: Infinity }}
-          className="absolute -bottom-32 -left-32 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"
-        />
-      </div>
+    <div className="bg-white pb-12">
+      <div className="max-w-[1400px] mx-auto px-4 py-6">
+        {/* Banner Carousel */}
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[400px] md:h-[550px] bg-[#1a1a1a] group">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0 bg-[#121212]"
+            >
+              <img 
+                src={SLIDES[current].image} 
+                alt="Luxury Gifting" 
+                className="w-full h-full object-cover opacity-60 transition-opacity duration-1000"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 flex flex-col justify-center px-6 md:px-24 bg-gradient-to-r from-black/80 via-black/40 to-transparent">
+                <div className="text-white max-w-3xl relative z-10">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full py-16">
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+                    <motion.div 
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="flex items-center gap-3 md:gap-4 mb-4 md:mb-8"
+                    >
+                      <div className="h-8 md:h-12 w-1.5 bg-secondary"></div>
+                      <span className="text-secondary font-black uppercase tracking-[0.2em] md:tracking-[0.4em] text-[10px] md:text-xs">{SLIDES[current].tag}</span>
+                    </motion.div>
+                    <motion.h2 
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="text-3xl md:text-[5.5rem] font-black mb-4 md:mb-10 leading-[1.1] md:leading-[0.85] tracking-tighter"
+                    >
+                      {SLIDES[current].title}
+                    </motion.h2>
+                    <motion.p 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-sm md:text-xl font-medium opacity-90 mb-8 md:mb-14 text-gray-100 max-w-xl leading-relaxed line-clamp-2 md:line-clamp-none"
+                    >
+                      {SLIDES[current].desc}
+                    </motion.p>
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="flex flex-col sm:flex-row gap-3 md:gap-6"
+                    >
+                      <Link href="/category/all" className="group bg-secondary text-black px-8 md:px-14 py-3 md:py-5 rounded-xl md:rounded-sm font-black shadow-2xl hover:bg-white transition-all flex items-center justify-center gap-3 md:gap-4 text-sm md:text-base">
+                        Shop Now <ArrowRight className="h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-2 transition-transform"/>
+                      </Link>
+                      <Link href="/deals" className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 md:px-14 py-3 md:py-5 rounded-xl md:rounded-sm font-black hover:bg-white/20 transition-all text-center text-sm md:text-base">
+                        Special Deals
+                      </Link>
+                    </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          
+          <button onClick={prev} className="absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md text-white p-5 rounded-full hover:bg-white hover:text-black transition-all opacity-0 group-hover:opacity-100">
+             <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button onClick={next} className="absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md text-white p-5 rounded-full hover:bg-white hover:text-black transition-all opacity-0 group-hover:opacity-100">
+             <ChevronRight className="h-6 w-6" />
+          </button>
+
+          {/* Indicators */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+            {SLIDES.map((_, idx) => (
+              <button 
+                key={idx}
+                onClick={() => setCurrent(idx)}
+                className={`h-1.5 transition-all duration-500 rounded-full ${current === idx ? 'w-12 bg-secondary' : 'w-3 bg-white/30'}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Trust Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12 py-8 border-y border-gray-100"
         >
-          {/* Left Content */}
-          <motion.div variants={itemVariants} className="space-y-8">
-            {/* Badge */}
-            <motion.div
-              className="inline-flex items-center gap-2 bg-white border border-primary/20 px-4 py-2 rounded-full shadow-sm w-fit"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-gray-700">Premium Gift Collections</span>
-            </motion.div>
-
-            {/* Heading */}
-            <div className="space-y-4">
-              <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-tight tracking-tight">
-                GiftAura
-              </h1>
-              <h2 className="text-4xl md:text-5xl font-bold">
-                <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-pulse">
-                  Delivering Happiness
-                </span>
-                <br />
-                <span className="text-gray-900">& Beautiful Surprises</span>
-              </h2>
-            </div>
-
-            {/* Description */}
-            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg">
-              Explore our premium collection of flowers, cakes, jewellery, and personalized gifts. Make every moment unforgettable with thoughtfully curated surprises.
-            </p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 pt-4"
-              variants={itemVariants}
-            >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/category/all" className="group relative inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300">
-                  <span>Shop Now</span>
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/category/occasions" className="inline-flex items-center gap-2 bg-white text-gray-900 border-2 border-gray-200 px-8 py-4 rounded-full font-bold text-lg hover:border-primary hover:text-primary transition-all duration-300 shadow-sm">
-                  <span>View Occasions</span>
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              className="grid grid-cols-2 gap-6 pt-8"
-              variants={itemVariants}
-            >
-              <div className="space-y-1">
-                <p className="text-3xl font-bold text-primary">10k+</p>
-                <p className="text-sm text-gray-600">Premium Gifts</p>
+          {[
+            { icon: <Sparkles className="h-6 w-6 text-secondary"/>, title: 'Premium Quality', desc: 'Handpicked products' },
+            { icon: <Play className="h-6 w-6 text-secondary"/>, title: 'Express Delivery', desc: 'Across 200+ cities' },
+            { icon: <Sparkles className="h-6 w-6 text-secondary"/>, title: 'Secure Checkout', desc: '100% safe payment' },
+            { icon: <Play className="h-6 w-6 text-secondary"/>, title: '24/7 Support', desc: 'Always here for you' }
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-4 group">
+              <div className="p-3 bg-gray-50 rounded-xl group-hover:bg-[#121212] transition-all group-hover:rotate-6">
+                {item.icon}
               </div>
-              <div className="space-y-1">
-                <p className="text-3xl font-bold text-primary">50+</p>
-                <p className="text-sm text-gray-600">Same-Day Cities</p>
+              <div>
+                <h4 className="font-black text-sm text-gray-900">{item.title}</h4>
+                <p className="text-xs text-gray-500">{item.desc}</p>
               </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Visual */}
-          <motion.div
-            variants={itemVariants}
-            className="relative hidden md:flex items-center justify-center h-[600px]"
-          >
-            {/* Main gradient orb */}
-            <motion.div
-              animate={{ y: [0, 20, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-primary/20 rounded-full blur-2xl"
-            />
-
-            {/* Floating cards container */}
-            <div className="relative w-full h-full flex items-center justify-center">
-              {/* Top-left card */}
-              <motion.div
-                initial={{ opacity: 0, x: -50, y: 50 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                whileHover={{ y: -10, rotate: 5 }}
-                className="absolute top-8 left-0 bg-white/90 backdrop-blur-md border border-white/40 p-4 rounded-2xl shadow-2xl w-48"
-              >
-                <p className="font-bold text-gray-900 text-sm">🚚 Same Day Delivery</p>
-                <p className="text-xs text-gray-500 mt-1">In 50+ Major Cities</p>
-              </motion.div>
-
-              {/* Bottom-right card */}
-              <motion.div
-                initial={{ opacity: 0, x: 50, y: -50 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                whileHover={{ y: -10, rotate: -5 }}
-                className="absolute bottom-16 right-0 bg-white/90 backdrop-blur-md border border-white/40 p-4 rounded-2xl shadow-2xl w-48"
-              >
-                <p className="font-bold text-gray-900 text-sm">⭐ 4.8+ Rating</p>
-                <p className="text-xs text-gray-500 mt-1">10k+ Happy Customers</p>
-              </motion.div>
-
-              {/* Center decorative element */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity }}
-                className="absolute inset-12 border-2 border-primary/20 rounded-full"
-              />
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 25, repeat: Infinity }}
-                className="absolute inset-24 border border-secondary/10 rounded-full"
-              />
-
-              {/* Center icon */}
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="text-6xl md:text-8xl"
-              >
-                🎁
-              </motion.div>
             </div>
-          </motion.div>
+          ))}
         </motion.div>
+
+        {/* Featured Sections with Animation */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+           <motion.div 
+             initial={{ opacity: 0, scale: 0.95 }}
+             whileInView={{ opacity: 1, scale: 1 }}
+             viewport={{ once: true }}
+             className="relative h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden group shadow-2xl bg-gray-100"
+           >
+              <img 
+                src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=800" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                alt="Combos" 
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
+                 <h3 className="text-3xl md:text-4xl font-black text-white mb-2 md:mb-3">Signature Combos</h3>
+                 <p className="text-white/80 mb-6 md:mb-8 font-medium text-base md:text-lg">Perfect pairings for your loved ones.</p>
+                 <Link href="/category/combos" className="w-fit bg-secondary text-black px-8 md:px-10 py-3 md:py-4 rounded-full font-black text-sm hover:bg-white transition-all transform hover:-translate-y-1">Explore Now</Link>
+              </div>
+           </motion.div>
+           
+           <div className="grid grid-rows-2 gap-8">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="relative rounded-[2rem] overflow-hidden group h-full shadow-xl bg-gray-100"
+              >
+                 <img 
+                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800" 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                    alt="Cakes" 
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                 />
+                 <div className="absolute inset-0 bg-black/30 flex items-center justify-between p-8 md:p-10">
+                    <h3 className="text-2xl md:text-3xl font-black text-white">Artisan Cakes</h3>
+                    <Link href="/category/cakes" className="bg-white/20 backdrop-blur-xl text-white p-4 md:p-5 rounded-full hover:bg-secondary hover:text-black transition-all transform hover:rotate-90"><ArrowRight className="h-5 w-5 md:h-6 md:w-6"/></Link>
+                 </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="relative rounded-[2rem] overflow-hidden group h-full shadow-xl bg-gray-100"
+              >
+                 <img 
+                    src="https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=800" 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                    alt="Gifts" 
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                 />
+                 <div className="absolute inset-0 bg-black/30 flex items-center justify-between p-8 md:p-10">
+                    <h3 className="text-2xl md:text-3xl font-black text-white">Luxury Hampers</h3>
+                    <Link href="/category/gifts" className="bg-white/20 backdrop-blur-xl text-white p-4 md:p-5 rounded-full hover:bg-secondary hover:text-black transition-all transform hover:rotate-90"><ArrowRight className="h-5 w-5 md:h-6 md:w-6"/></Link>
+                 </div>
+              </motion.div>
+           </div>
+        </div>
+
+
+        {/* New Special Collections Section (Filling Vacant Space) */}
+        <div className="mt-24 pb-20">
+           <div className="flex items-end justify-between mb-12">
+              <div>
+                <h2 className="text-4xl font-black text-[#121212] tracking-tighter mb-2">Curated for You</h2>
+                <p className="text-gray-500 font-medium">Handpicked selections for every unique occasion.</p>
+              </div>
+              <Link href="/category/all" className="text-sm font-black uppercase tracking-widest text-secondary hover:text-primary transition-colors border-b-2 border-secondary pb-1">View All Collections</Link>
+           </div>
+           
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { title: 'Golden Hour', img: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=400' },
+                { title: 'Midnight Magic', img: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=400' },
+                { title: 'Floral Fantasy', img: 'https://images.unsplash.com/photo-1512203530485-25a218a5da4c?auto=format&fit=crop&q=80&w=400' },
+                { title: 'Sweet Serenity', img: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=400' }
+              ].map((item, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="group cursor-pointer"
+                >
+                  <div className="relative aspect-square rounded-2xl overflow-hidden mb-4">
+                    <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 group-hover:text-secondary transition-colors">{item.title}</h4>
+                </motion.div>
+              ))}
+           </div>
+        </div>
+
+
       </div>
     </div>
+
+
+
+
+
+
   );
 }

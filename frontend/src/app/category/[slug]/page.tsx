@@ -22,8 +22,6 @@ const SAMPLE_PRODUCTS = [
   ...BASE_PRODUCTS,
   ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_2', name: p.name + ' - Premium', price: p.price + 150, reviews: p.reviews + 12 })),
   ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_3', name: p.name + ' - Classic', price: p.price - 50, reviews: p.reviews + 40 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_4', name: p.name + ' - Limited Edition', price: p.price + 400, reviews: p.reviews + 5 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_5', name: p.name + ' - Jumbo Pack', price: p.price + 250, reviews: p.reviews + 22 })),
 ];
 
 const PRICE_RANGES = [
@@ -39,7 +37,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState('popularity');
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
-  const itemsPerPage = 24;
+  const itemsPerPage = 12;
 
   // Toggle a price range filter
   const togglePriceRange = (label: string) => {

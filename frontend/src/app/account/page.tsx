@@ -7,6 +7,49 @@ export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState('orders');
   const [editingProfile, setEditingProfile] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
+  
+  // Real state for user profile
+  const [userData, setUserData] = useState({
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    phone: '+91 9876543210',
+    dob: '1995-05-15'
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleProfileUpdate = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')!).token : null;
+      const response = await fetch('http://localhost:5000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: `${userData.firstName} ${userData.lastName}`,
+          email: userData.email,
+          phone: userData.phone,
+          dob: userData.dob
+        })
+      });
+
+      if (response.ok) {
+        setEditingProfile(false);
+        alert('Profile updated successfully!');
+      } else {
+        alert('Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -55,7 +98,7 @@ export default function UserDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 py-10">
+    <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar */}
@@ -65,362 +108,236 @@ export default function UserDashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-lg sticky top-28">
+            <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm sticky top-28">
               {/* Profile Card */}
               <div className="flex items-center space-x-4 border-b border-gray-100 pb-6 mb-6">
-                <motion.div
-                  className="w-16 h-16 bg-gradient-to-tr from-primary to-secondary text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-lg"
-                  whileHover={{ scale: 1.1 }}
-                >
-                  JD
-                </motion.div>
+                <div className="w-14 h-14 bg-[#232f3e] text-white rounded-full flex items-center justify-center font-bold text-xl">
+                  {userData.firstName[0]}{userData.lastName[0]}
+                </div>
                 <div>
-                  <h2 className="font-extrabold text-gray-900 text-lg">John Doe</h2>
-                  <p className="text-xs text-gray-500 font-medium">john.doe@example.com</p>
-                  <p className="text-xs text-gray-400 mt-1">✅ Verified Member</p>
+                  <h2 className="font-bold text-gray-900 text-lg">{userData.firstName} {userData.lastName}</h2>
+                  <p className="text-xs text-gray-500">{userData.email}</p>
                 </div>
               </div>
 
               {/* Navigation */}
-              <nav className="space-y-2 mb-8">
+              <nav className="space-y-1 mb-8">
                 {[
-                  { id: 'orders', label: 'My Orders', icon: <Package className="h-5 w-5" />, badge: 2 },
-                  { id: 'wishlist', label: 'Wishlist', icon: <Heart className="h-5 w-5" />, badge: 2 },
-                  { id: 'addresses', label: 'Saved Addresses', icon: <MapPin className="h-5 w-5" />, badge: 2 },
-                  { id: 'profile', label: 'Profile Settings', icon: <User className="h-5 w-5" /> },
+                  { id: 'orders', label: 'Your Orders', icon: <Package className="h-5 w-5" /> },
+                  { id: 'profile', label: 'Login & Security', icon: <User className="h-5 w-5" /> },
+                  { id: 'addresses', label: 'Your Addresses', icon: <MapPin className="h-5 w-5" /> },
+                  { id: 'wishlist', label: 'Your Wishlist', icon: <Heart className="h-5 w-5" /> },
                 ].map(tab => (
-                  <motion.button
+                  <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    whileHover={{ x: 4 }}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all font-bold relative ${
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-all font-medium ${
                       activeTab === tab.id
-                        ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg shadow-primary/30'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                        ? 'bg-orange-50 text-orange-700 border-l-4 border-orange-500'
+                        : 'text-gray-600 hover:bg-gray-50'
                     }`}
                   >
-                    <div className="flex items-center space-x-3">
-                      {tab.icon}
-                      <span>{tab.label}</span>
-                    </div>
-                    {tab.badge && (
-                      <span className="bg-secondary text-white text-xs font-bold px-2 py-1 rounded-full">
-                        {tab.badge}
-                      </span>
-                    )}
-                  </motion.button>
+                    {tab.icon}
+                    <span>{tab.label}</span>
+                  </button>
                 ))}
               </nav>
 
               {/* Logout */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors font-bold border border-transparent hover:border-red-100"
-              >
+              <button className="w-full flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors font-medium">
                 <LogOut className="h-5 w-5" />
-                <span>Logout</span>
-              </motion.button>
+                <span>Sign Out</span>
+              </button>
             </div>
           </motion.div>
 
           {/* Content Area */}
-          <motion.div
-            className="flex-1"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div className="flex-1">
             <AnimatePresence mode="wait">
               {/* Orders Tab */}
               {activeTab === 'orders' && (
                 <motion.div
                   key="orders"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white rounded-lg p-8 border border-gray-200 shadow-sm"
                 >
                   <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-                    <h2 className="text-3xl font-black text-gray-900">Order History</h2>
-                    <span className="bg-primary/10 text-primary px-4 py-2 rounded-full font-bold text-sm">
-                      {orders.length} Orders
-                    </span>
+                    <h2 className="text-2xl font-bold text-gray-900">Your Orders</h2>
                   </div>
 
-                  <motion.div
-                    className="space-y-6"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
+                  <div className="space-y-6">
                     {orders.map((order) => (
-                      <motion.div
-                        key={order.id}
-                        variants={itemVariants}
-                        whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
-                        className="border border-gray-100 rounded-2xl p-6 hover:shadow-lg hover:border-primary/30 transition-all group bg-gradient-to-br from-white to-gray-50"
-                      >
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100">
+                      <div key={order.id} className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div className="bg-gray-50 px-6 py-4 flex flex-wrap gap-6 text-sm text-gray-600 border-b border-gray-200">
                           <div>
-                            <p className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">Order #{order.orderId}</p>
-                            <p className="text-sm text-gray-600 font-medium">Placed on {order.date}</p>
+                            <p className="uppercase text-[10px] font-bold">Order Placed</p>
+                            <p className="font-medium">{order.date}</p>
                           </div>
-                          <div className="text-left sm:text-right mt-4 sm:mt-0">
-                            <p className="font-black text-gray-900 text-2xl mb-2">₹{order.amount}</p>
-                            <motion.div
-                              whileHover={{ scale: 1.05 }}
-                              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${getStatusColor(order.status)}`}
-                            >
-                              {getStatusIcon(order.status)}
-                              {order.status}
-                            </motion.div>
+                          <div>
+                            <p className="uppercase text-[10px] font-bold">Total</p>
+                            <p className="font-medium">₹{order.amount}</p>
+                          </div>
+                          <div className="ml-auto text-right">
+                            <p className="uppercase text-[10px] font-bold">Order #</p>
+                            <p className="font-medium text-blue-600 hover:underline cursor-pointer">{order.orderId}</p>
                           </div>
                         </div>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden border-2 border-gray-200 flex-shrink-0">
-                              <img src={order.items[0].image} alt="Item" className="w-full h-full object-cover" />
-                            </div>
-                            <div>
-                              <p className="font-bold text-gray-900 text-lg">{order.items[0].name}</p>
-                              <p className="text-sm text-gray-500">Qty: {order.items[0].qty}</p>
+                        <div className="p-6 flex items-center gap-6">
+                          <img src={order.items[0].image} alt="Product" className="w-20 h-20 object-cover rounded-md" />
+                          <div className="flex-1">
+                            <p className="font-bold text-gray-900">{order.items[0].name}</p>
+                            <p className="text-sm text-gray-500 mt-1">Delivered on {order.date}</p>
+                            <div className="mt-4 flex gap-4">
+                              <button className="bg-yellow-400 hover:bg-yellow-500 text-xs font-bold py-2 px-4 rounded-md shadow-sm">Buy it again</button>
+                              <button className="bg-white border border-gray-300 hover:bg-gray-50 text-xs font-bold py-2 px-4 rounded-md shadow-sm">View your item</button>
                             </div>
                           </div>
-                          <motion.button
-                            whileHover={{ x: 4 }}
-                            className="text-primary font-bold flex items-center hover:text-primary/80 bg-primary/5 px-4 py-2 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                          >
-                            <Eye className="h-4 w-4 mr-1" /> View
-                          </motion.button>
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
-                  </motion.div>
-                </motion.div>
-              )}
-
-              {/* Wishlist Tab */}
-              {activeTab === 'wishlist' && (
-                <motion.div
-                  key="wishlist"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
-                >
-                  <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-                    <h2 className="text-3xl font-black text-gray-900">My Wishlist</h2>
-                    <span className="bg-secondary/10 text-secondary px-4 py-2 rounded-full font-bold text-sm">
-                      {wishlistItems.length} Items
-                    </span>
                   </div>
-
-                  <motion.div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    {wishlistItems.map((item) => (
-                      <motion.div
-                        key={item.id}
-                        variants={itemVariants}
-                        whileHover={{ y: -8 }}
-                        className="group"
-                      >
-                        <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-xl transition-all h-full flex flex-col">
-                          <div className="h-48 bg-gray-200 overflow-hidden relative">
-                            <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            <motion.button
-                              whileHover={{ scale: 1.1 }}
-                              className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-lg"
-                            >
-                              <Heart className="h-5 w-5 fill-red-500 text-red-500" />
-                            </motion.button>
-                          </div>
-                          <div className="p-5 flex flex-col flex-1 justify-between">
-                            <div>
-                              <h3 className="font-bold text-gray-900 text-lg mb-2 line-clamp-2">{item.name}</h3>
-                              <div className="flex items-center gap-1 mb-3">
-                                {[...Array(5)].map((_, i) => (
-                                  <span key={i} className="text-yellow-400">★</span>
-                                ))}
-                                <span className="text-sm font-bold text-gray-700 ml-1">{item.rating}</span>
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-2xl font-black text-primary mb-4">₹{item.price}</p>
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                className="w-full bg-primary text-white font-bold py-2 rounded-lg transition-all"
-                              >
-                                Add to Cart
-                              </motion.button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
                 </motion.div>
               )}
 
-              {/* Addresses Tab */}
-              {activeTab === 'addresses' && (
-                <motion.div
-                  key="addresses"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
-                >
-                  <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-                    <h2 className="text-3xl font-black text-gray-900">Saved Addresses</h2>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      onClick={() => setShowAddAddress(!showAddAddress)}
-                      className="bg-primary text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2 hover:shadow-lg"
-                    >
-                      <Plus className="h-5 w-5" /> Add Address
-                    </motion.button>
-                  </div>
-
-                  <motion.div
-                    className="space-y-4"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    {addresses.map((addr) => (
-                      <motion.div
-                        key={addr.id}
-                        variants={itemVariants}
-                        whileHover={{ x: 4 }}
-                        className="border-2 border-gray-100 rounded-2xl p-6 hover:border-primary/30 transition-all group relative"
-                      >
-                        {addr.default && (
-                          <span className="absolute top-3 right-3 bg-green-50 text-green-600 text-xs font-bold px-3 py-1 rounded-full">
-                            Default
-                          </span>
-                        )}
-                        <h3 className="font-bold text-lg text-gray-900 mb-2">{addr.name}</h3>
-                        <p className="text-gray-600 text-sm mb-3">{addr.address}</p>
-                        <p className="text-gray-600 text-sm mb-4">📱 {addr.phone}</p>
-                        <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            className="text-primary font-bold flex items-center gap-1 text-sm bg-primary/5 px-3 py-2 rounded-lg"
-                          >
-                            <Edit2 className="h-4 w-4" /> Edit
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            className="text-red-500 font-bold flex items-center gap-1 text-sm bg-red-50 px-3 py-2 rounded-lg"
-                          >
-                            <Trash2 className="h-4 w-4" /> Delete
-                          </motion.button>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </motion.div>
-              )}
-
-              {/* Profile Settings Tab */}
+              {/* Profile Tab */}
               {activeTab === 'profile' && (
                 <motion.div
                   key="profile"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white rounded-lg p-8 border border-gray-200 shadow-sm"
                 >
                   <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
-                    <h2 className="text-3xl font-black text-gray-900">Profile Settings</h2>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      onClick={() => setEditingProfile(!editingProfile)}
-                      className="bg-primary text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2 hover:shadow-lg"
-                    >
-                      <Edit2 className="h-5 w-5" /> {editingProfile ? 'Cancel' : 'Edit'}
-                    </motion.button>
+                    <h2 className="text-2xl font-bold text-gray-900">Login & Security</h2>
+                    {!editingProfile && (
+                      <button
+                        onClick={() => setEditingProfile(true)}
+                        className="bg-white border border-gray-300 px-4 py-2 rounded-md font-bold text-sm hover:bg-gray-50 shadow-sm"
+                      >
+                        Edit Profile
+                      </button>
+                    )}
                   </div>
 
-                  <motion.div
-                    className="space-y-6"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-8 max-w-2xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-3">First Name</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">First Name</label>
                         <input
                           type="text"
                           disabled={!editingProfile}
-                          defaultValue="John"
-                          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none font-bold disabled:bg-gray-50 transition-all"
+                          value={userData.firstName}
+                          onChange={(e) => setUserData({...userData, firstName: e.target.value})}
+                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-3">Last Name</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Last Name</label>
                         <input
                           type="text"
                           disabled={!editingProfile}
-                          defaultValue="Doe"
-                          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none font-bold disabled:bg-gray-50 transition-all"
+                          value={userData.lastName}
+                          onChange={(e) => setUserData({...userData, lastName: e.target.value})}
+                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
                         />
                       </div>
-                    </motion.div>
+                    </div>
 
-                    <motion.div variants={itemVariants}>
-                      <label className="block text-sm font-bold text-gray-700 mb-3">Email</label>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
                       <input
                         type="email"
                         disabled
-                        defaultValue="john.doe@example.com"
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 font-bold bg-gray-50 cursor-not-allowed"
+                        value={userData.email}
+                        className="w-full px-4 py-2 rounded-md border border-gray-300 bg-gray-50 text-gray-500 cursor-not-allowed"
                       />
-                    </motion.div>
+                    </div>
 
-                    <motion.div variants={itemVariants}>
-                      <label className="block text-sm font-bold text-gray-700 mb-3">Phone Number</label>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Mobile Phone Number</label>
                       <input
                         type="tel"
                         disabled={!editingProfile}
-                        defaultValue="+91 9876543210"
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none font-bold disabled:bg-gray-50 transition-all"
+                        value={userData.phone}
+                        onChange={(e) => setUserData({...userData, phone: e.target.value})}
+                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
                       />
-                    </motion.div>
+                    </div>
 
-                    <motion.div variants={itemVariants}>
-                      <label className="block text-sm font-bold text-gray-700 mb-3">Date of Birth</label>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Date of Birth</label>
                       <input
                         type="date"
                         disabled={!editingProfile}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none font-bold disabled:bg-gray-50 transition-all"
+                        value={userData.dob}
+                        onChange={(e) => setUserData({...userData, dob: e.target.value})}
+                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
                       />
-                    </motion.div>
+                    </div>
 
                     {editingProfile && (
-                      <motion.button
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="w-full bg-primary text-white font-bold py-4 rounded-xl text-lg hover:shadow-lg transition-all mt-8"
-                      >
-                        Save Changes
-                      </motion.button>
+                      <div className="flex gap-4 pt-4">
+                        <button
+                          onClick={handleProfileUpdate}
+                          disabled={loading}
+                          className="bg-yellow-400 hover:bg-yellow-500 px-8 py-2 rounded-md font-bold text-sm shadow-sm disabled:opacity-50"
+                        >
+                          {loading ? 'Saving...' : 'Save Changes'}
+                        </button>
+                        <button
+                          onClick={() => setEditingProfile(false)}
+                          className="bg-white border border-gray-300 px-8 py-2 rounded-md font-bold text-sm hover:bg-gray-50 shadow-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     )}
-                  </motion.div>
+                  </div>
+                </motion.div>
+              )}
+              
+              {/* Other tabs follow similar clean Amazon style */}
+              {activeTab === 'addresses' && (
+                <motion.div
+                  key="addresses"
+                  className="bg-white rounded-lg p-8 border border-gray-200 shadow-sm"
+                >
+                  <h2 className="text-2xl font-bold text-gray-900 mb-8 pb-6 border-b border-gray-100">Your Addresses</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <button className="border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center text-gray-500 hover:border-gray-400 hover:bg-gray-50 transition-all h-full min-h-[200px]">
+                      <Plus className="h-10 w-10 mb-2" />
+                      <span className="font-bold">Add Address</span>
+                    </button>
+                    {addresses.map(addr => (
+                      <div key={addr.id} className="border border-gray-300 rounded-lg p-6 flex flex-col min-h-[200px]">
+                        {addr.default && <p className="text-xs text-gray-500 mb-2">Default: <Heart className="inline h-3 w-3 fill-orange-500 text-orange-500" /></p>}
+                        <p className="font-bold text-gray-900">{addr.name}</p>
+                        <p className="text-sm text-gray-600 mt-2 flex-grow">{addr.address}</p>
+                        <p className="text-sm text-gray-600 mt-1">Phone: {addr.phone}</p>
+                        <div className="mt-4 flex gap-4 text-sm font-medium text-blue-600">
+                          <button className="hover:underline hover:text-orange-600">Edit</button>
+                          <span className="text-gray-300">|</span>
+                          <button className="hover:underline hover:text-orange-600">Remove</button>
+                          {!addr.default && (
+                            <>
+                              <span className="text-gray-300">|</span>
+                              <button className="hover:underline hover:text-orange-600">Set as Default</button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
