@@ -2,11 +2,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Package, Heart, MapPin, LogOut, ChevronRight, Edit2, Grid3X3, Trash2, Plus, Clock, CheckCircle2, Eye } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
+import { useRouter } from 'next/navigation';
 
 export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState('orders');
   const [editingProfile, setEditingProfile] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
+  const { addToCart } = useCart();
+  const router = useRouter();
+
+  const handleBuyAgain = (item: any) => {
+    addToCart({
+      id: item.id || Math.random().toString(),
+      name: item.name,
+      price: item.price || 1000,
+      image: item.image,
+    });
+    router.push('/cart');
+  };
   
   // Real state for user profile
   const [userData, setUserData] = useState({
@@ -190,7 +204,12 @@ export default function UserDashboard() {
                             <p className="font-bold text-gray-900">{order.items[0].name}</p>
                             <p className="text-sm text-gray-500 mt-1">Delivered on {order.date}</p>
                             <div className="mt-4 flex gap-4">
-                              <button className="bg-yellow-400 hover:bg-yellow-500 text-xs font-bold py-2 px-4 rounded-md shadow-sm">Buy it again</button>
+                              <button 
+                                onClick={() => handleBuyAgain(order.items[0])}
+                                className="bg-yellow-400 hover:bg-yellow-500 text-xs font-bold py-2 px-4 rounded-md shadow-sm"
+                              >
+                                Buy it again
+                              </button>
                               <button className="bg-white border border-gray-300 hover:bg-gray-50 text-xs font-bold py-2 px-4 rounded-md shadow-sm">View your item</button>
                             </div>
                           </div>

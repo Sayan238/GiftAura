@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: {
@@ -23,6 +24,7 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const router = useRouter();
   const wishlisted = isInWishlist(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -33,6 +35,17 @@ function ProductCard({ product }: ProductCardProps) {
       price: product.price,
       image: product.image,
     });
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
+    router.push('/checkout');
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -122,6 +135,7 @@ function ProductCard({ product }: ProductCardProps) {
             Add to Cart
           </button>
           <button
+            onClick={handleBuyNow}
             className="flex-1 bg-[#ffa41c] hover:bg-[#fa8900] text-gray-900 text-[13px] font-bold py-2 rounded-full transition-all shadow-sm border border-[#ee9100]"
           >
             Buy Now

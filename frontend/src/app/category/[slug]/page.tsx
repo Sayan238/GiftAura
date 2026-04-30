@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useMemo } from 'react';
-import { Filter, ChevronDown, SlidersHorizontal, Star } from 'lucide-react';
+import { Filter, ChevronDown, SlidersHorizontal, Star, X } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
 
 const BASE_PRODUCTS = [
@@ -103,148 +103,150 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
 
   const categoryName = resolvedParams.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
+  const FilterContent = (
+    <div className="p-0">
+      <div className="mb-6 flex justify-between items-center">
+          <button onClick={() => { clearFilters(); setIsFilterOpen(false); }} className="text-xs font-bold text-blue-600 hover:text-orange-600 transition-colors uppercase tracking-wider">Clear All</button>
+      </div>
+      
+      {/* Delivery Day */}
+      <div className="mb-6">
+        <h3 className="font-bold text-gray-900 mb-3 text-sm">Delivery Day</h3>
+        <div className="space-y-3">
+          {['Today', 'Tomorrow', 'Any Date'].map(opt => (
+            <label key={opt} className="flex items-center space-x-2 cursor-pointer group">
+              <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+              <span className="text-sm text-gray-700 hover:text-gray-900 transition-colors">{opt}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Price Range */}
+      <div className="mb-6 border-t border-gray-200 pt-4">
+        <h3 className="font-bold text-gray-900 mb-3 text-sm">Price</h3>
+        <div className="space-y-3">
+          {PRICE_RANGES.map(range => (
+            <label key={range.label} className="flex items-center space-x-2 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={selectedPriceRanges.includes(range.label)}
+                onChange={() => togglePriceRange(range.label)}
+                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm text-gray-700 hover:text-gray-900 transition-colors">
+                {range.label}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Customer Reviews */}
+      <div className="mb-6 border-t border-gray-200 pt-4">
+        <h3 className="font-bold text-gray-900 mb-3 text-sm">Customer Reviews</h3>
+        <div className="space-y-3">
+          <button className="flex items-center text-sm text-gray-700 hover:text-orange-500 w-full text-left">
+            <div className="flex text-yellow-400 mr-2">
+              {Array.from({ length: 4 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+              <Star className="h-4 w-4 text-gray-300" />
+            </div>
+            & Up
+          </button>
+          <button className="flex items-center text-sm text-gray-700 hover:text-orange-500 w-full text-left">
+            <div className="flex text-yellow-400 mr-2">
+              {Array.from({ length: 3 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+              {Array.from({ length: 2 }).map((_, i) => <Star key={i} className="h-4 w-4 text-gray-300" />)}
+            </div>
+            & Up
+          </button>
+        </div>
+      </div>
+      
+      {/* Select City */}
+      <div className="mb-6 border-t border-gray-200 pt-4">
+        <h3 className="font-bold text-gray-900 mb-3 text-sm">City</h3>
+        <select className="w-full bg-white border border-gray-300 text-sm text-gray-700 py-2 px-3 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+          <option>Delhi</option>
+          <option>Mumbai</option>
+          <option>Bangalore</option>
+          <option>Chennai</option>
+          <option>Kolkata</option>
+        </select>
+      </div>
+    </div>
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Breadcrumbs */}
-      <nav className="text-sm mb-4 text-gray-500 font-medium">
-        <ol className="flex items-center space-x-2">
+      <nav className="text-[13px] mb-6 text-gray-600 font-medium">
+        <ol className="flex items-center space-x-1.5">
           <li><a href="/" className="hover:text-primary transition-colors">Home</a></li>
-          <li><span>›</span></li>
+          <li className="text-gray-400">›</li>
           <li><a href="/category" className="hover:text-primary transition-colors">Categories</a></li>
-          <li><span>›</span></li>
+          <li className="text-gray-400">›</li>
           <li className="text-gray-900 font-bold">{categoryName}</li>
         </ol>
       </nav>
       
-      <div className="mb-6 pb-4 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900">
-          {categoryName} <span className="text-sm font-normal text-gray-500 ml-2">({filteredAndSortedProducts.length} results)</span>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 flex items-baseline gap-3">
+          {categoryName} 
+          <span className="text-xl font-normal text-gray-500">({filteredAndSortedProducts.length} results)</span>
         </h1>
       </div>
 
       <div className="flex flex-col gap-8">
-
-        {/* Filter Overlay / Drawer */}
+        {/* Filter Drawer */}
         {isFilterOpen && (
-          <div className="fixed inset-0 z-[100] flex">
-            {/* Backdrop */}
-            <div 
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
-              onClick={() => setIsFilterOpen(false)}
-            />
-            
-            {/* Drawer */}
-            <aside className="relative z-50 w-full max-w-xs flex-shrink-0 bg-white shadow-2xl h-full overflow-y-auto">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
-                  <h2 className="text-lg font-bold text-gray-900 flex items-center">
-                    <Filter className="h-5 w-5 mr-2"/> Filters
+          <div className="fixed inset-0 z-[100001] flex">
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={() => setIsFilterOpen(false)} />
+            <aside className="relative z-50 w-[320px] max-w-[85vw] flex-shrink-0 bg-white shadow-2xl h-full overflow-y-auto">
+              <div className="flex flex-col h-full">
+                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                  <h2 className="text-xl font-bold text-gray-900 flex items-center gap-3">
+                    <SlidersHorizontal className="h-5 w-5 text-orange-500" /> Filters
                   </h2>
-                  <button onClick={() => setIsFilterOpen(false)} className="text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Close panel</span>
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                  <button 
+                    onClick={() => setIsFilterOpen(false)}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <X className="h-6 w-6 text-gray-400" />
                   </button>
                 </div>
-                
-                <div className="mb-4">
-                   <button onClick={() => { clearFilters(); setIsFilterOpen(false); }} className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors w-full text-left">Clear All Filters</button>
-                </div>
-                
-                {/* Delivery Day */}
-                <div className="mb-6">
-                  <h3 className="font-bold text-gray-900 mb-3 text-sm">Delivery Day</h3>
-                  <div className="space-y-3">
-                    {['Today', 'Tomorrow', 'Any Date'].map(opt => (
-                      <label key={opt} className="flex items-center space-x-2 cursor-pointer group">
-                        <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="text-sm text-gray-700 hover:text-gray-900 transition-colors">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Price Range */}
-                <div className="mb-6 border-t border-gray-200 pt-4">
-                  <h3 className="font-bold text-gray-900 mb-3 text-sm">Price</h3>
-                  <div className="space-y-3">
-                    {PRICE_RANGES.map(range => (
-                      <label key={range.label} className="flex items-center space-x-2 cursor-pointer group">
-                        <input
-                          type="checkbox"
-                          checked={selectedPriceRanges.includes(range.label)}
-                          onChange={() => togglePriceRange(range.label)}
-                          className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="text-sm text-gray-700 hover:text-gray-900 transition-colors">
-                          {range.label}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Customer Reviews */}
-                <div className="mb-6 border-t border-gray-200 pt-4">
-                  <h3 className="font-bold text-gray-900 mb-3 text-sm">Customer Reviews</h3>
-                  <div className="space-y-3">
-                    <button className="flex items-center text-sm text-gray-700 hover:text-orange-500 w-full text-left">
-                      <div className="flex text-yellow-400 mr-2">
-                        {Array.from({ length: 4 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-                        <Star className="h-4 w-4 text-gray-300" />
-                      </div>
-                      &amp; Up
-                    </button>
-                    <button className="flex items-center text-sm text-gray-700 hover:text-orange-500 w-full text-left">
-                      <div className="flex text-yellow-400 mr-2">
-                        {Array.from({ length: 3 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
-                        {Array.from({ length: 2 }).map((_, i) => <Star key={i} className="h-4 w-4 text-gray-300" />)}
-                      </div>
-                      &amp; Up
-                    </button>
-                  </div>
-                </div>
-                
-                {/* Select City */}
-                <div className="mb-6 border-t border-gray-200 pt-4">
-                  <h3 className="font-bold text-gray-900 mb-3 text-sm">City</h3>
-                  <select className="w-full bg-white border border-gray-300 text-sm text-gray-700 py-2 px-3 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    <option>Delhi</option>
-                    <option>Mumbai</option>
-                    <option>Bangalore</option>
-                    <option>Chennai</option>
-                    <option>Kolkata</option>
-                  </select>
+                <div className="flex-1 p-6">
+                  {FilterContent}
                 </div>
               </div>
             </aside>
           </div>
         )}
 
-        <div className="flex-1 w-full">
-          <div className="flex justify-between items-center mb-6">
+        <div className="w-full">
+          <div className="flex flex-wrap items-center gap-6 mb-8">
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => setIsFilterOpen(true)} 
-                className="flex items-center text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-50 transition-colors shadow-sm"
+                className="flex items-center text-sm font-bold text-gray-700 bg-white border border-gray-300 rounded-lg px-6 py-2.5 hover:bg-gray-50 transition-all shadow-sm active:scale-95"
               >
-                <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
+                <SlidersHorizontal className="h-4 w-4 mr-2.5" /> Filters
               </button>
-              <span className="hidden sm:inline text-sm text-gray-500 font-medium">
+              <span className="text-sm text-gray-600 font-medium">
                 {filteredAndSortedProducts.length === 0
                   ? 'No results found'
                   : `1-${Math.min(currentPage * itemsPerPage, filteredAndSortedProducts.length)} of over ${filteredAndSortedProducts.length} results for "${categoryName}"`
                 }
               </span>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="hidden sm:inline text-sm text-gray-700 font-medium">Sort by:</span>
+            
+            <div className="ml-auto flex items-center space-x-3">
+              <span className="hidden sm:inline text-sm text-gray-700 font-bold">Sort by:</span>
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-                  className="appearance-none bg-white border border-gray-300 text-sm text-gray-700 py-2 pl-3 pr-8 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 cursor-pointer shadow-sm"
+                  className="appearance-none bg-white border border-gray-300 text-sm font-bold text-gray-700 py-2.5 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm transition-all"
                 >
                   <option value="popularity">Featured</option>
                   <option value="price-low">Price: Low to High</option>
@@ -252,7 +254,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
                   <option value="rating">Avg. Customer Review</option>
                   <option value="newest">Newest Arrivals</option>
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
               </div>
             </div>
           </div>

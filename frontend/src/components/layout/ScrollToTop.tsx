@@ -1,15 +1,14 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export default function BackToTop() {
+export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled down
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
+      if (window.pageYOffset > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -35,19 +34,13 @@ export default function BackToTop() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[100000] p-4 bg-[#121212] text-white rounded-full shadow-2xl border border-white/10 hover:bg-secondary hover:text-black transition-all group overflow-hidden"
-          whileHover={{ y: -5 }}
-          whileTap={{ scale: 0.9 }}
-          aria-label="Back to top"
+          className="fixed bottom-8 right-8 z-[100000] p-4 bg-[#121212] text-white rounded-full shadow-2xl hover:bg-secondary hover:text-black transition-all transform hover:-translate-y-2 group"
+          aria-label="Scroll to top"
         >
-          {/* Animated Background Pulse */}
-          <motion.div
-            animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute inset-0 bg-secondary rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity"
-          />
-          
           <ChevronUp className="h-6 w-6 group-hover:animate-bounce" />
+          <div className="absolute -top-12 right-0 bg-black text-white text-[10px] font-black px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest pointer-events-none">
+            Back to Top
+          </div>
         </motion.button>
       )}
     </AnimatePresence>

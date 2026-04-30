@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 
 const TRENDING_PRODUCTS = [
-  { id: 1, name: 'Premium Red Roses Bouquet', price: 999, originalPrice: 1299, rating: 4.8, reviews: 124, tag: 'Bestseller', image: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=500' },
-  { id: 2, name: 'Chocolate Truffle Cake (1kg)', price: 850, originalPrice: 1000, rating: 4.9, reviews: 89, tag: 'Trending', image: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=500' },
-  { id: 3, name: 'Personalized Name Necklace', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 210, tag: 'New', image: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=500' },
-  { id: 4, name: 'Luxury Spa Gift Hamper', price: 2499, originalPrice: 2999, rating: 4.6, reviews: 56, tag: 'Premium', image: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=500' },
+  { id: 1, name: 'Premium Red Roses Bouquet', price: 999, originalPrice: 1299, rating: 4.8, reviews: 124, tag: 'Bestseller', image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500' },
+  { id: 2, name: 'Chocolate Truffle Cake (1kg)', price: 850, originalPrice: 1000, rating: 4.9, reviews: 89, tag: 'Trending', image: 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500' },
+  { id: 3, name: 'Personalized Name Necklace', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 210, tag: 'New', image: 'https://images.pexels.com/photos/1413420/pexels-photo-1413420.jpeg?auto=compress&cs=tinysrgb&w=500' },
+  { id: 4, name: 'Luxury Spa Gift Hamper', price: 2499, originalPrice: 2999, rating: 4.6, reviews: 56, tag: 'Premium', image: 'https://images.pexels.com/photos/1020585/pexels-photo-1020585.jpeg?auto=compress&cs=tinysrgb&w=500' },
 ];
 
 

@@ -250,6 +250,7 @@ export default function Navbar() {
                        <div className="h-px bg-white/10 my-2"></div>
                        <Link href="/account" className="flex items-center gap-3 hover:text-secondary transition-colors"><User className="h-4 w-4 text-gray-500"/> My Profile</Link>
                        <Link href="/orders" className="flex items-center gap-3 hover:text-secondary transition-colors"><ShoppingBag className="h-4 w-4 text-gray-500"/> Your Orders</Link>
+                       <Link href="/track" className="flex items-center gap-3 hover:text-secondary transition-colors"><Sparkles className="h-4 w-4 text-gray-500"/> Track Order</Link>
                        <Link href="/wishlist" className="flex items-center gap-3 hover:text-secondary transition-colors"><Heart className="h-4 w-4 text-gray-500"/> Wishlist</Link>
                     </div>
                   </motion.div>
@@ -380,10 +381,14 @@ export default function Navbar() {
               {/* Bottom Actions */}
               <div className="p-6 bg-gray-50 mt-auto border-t border-gray-100 space-y-4">
                 <Link href="/login" className="block w-full bg-[#121212] text-white text-center py-4 rounded-xl font-black text-sm transition-all hover:bg-black">Sign In</Link>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                    <Link href="/orders" className="p-4 bg-white rounded-xl border border-gray-100 flex flex-col items-center gap-2 group">
                       <ShoppingBag className="h-5 w-5 text-gray-400 group-hover:text-secondary transition-colors" />
                       <span className="text-[10px] font-black uppercase text-gray-500">Orders</span>
+                   </Link>
+                   <Link href="/track" className="p-4 bg-white rounded-xl border border-gray-100 flex flex-col items-center gap-2 group">
+                      <Sparkles className="h-5 w-5 text-gray-400 group-hover:text-secondary transition-colors" />
+                      <span className="text-[10px] font-black uppercase text-gray-500">Track</span>
                    </Link>
                    <Link href="/wishlist" className="p-4 bg-white rounded-xl border border-gray-100 flex flex-col items-center gap-2 group">
                       <Heart className="h-5 w-5 text-gray-400 group-hover:text-secondary transition-colors" />

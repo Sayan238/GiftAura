@@ -12,7 +12,7 @@ const FEATURED_PRODUCTS = [
     description: 'Premium collection with gourmet items',
     price: 2499,
     originalPrice: 3999,
-    image: 'https://images.pexels.com/photos/2774527/pexels-photo-2774527.jpeg?auto=compress&cs=tinysrgb&w=500',
+    image: 'https://images.pexels.com/photos/206940/pexels-photo-206940.jpeg?auto=compress&cs=tinysrgb&w=800',
     rating: 4.9,
     reviews: 542,
     badge: 'Premium Choice',
@@ -69,7 +69,7 @@ export default function FeaturedProductsCarousel() {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-primary/5 via-white to-secondary/5 relative overflow-hidden">
+    <section className="pt-32 pb-20 md:py-32 bg-gradient-to-br from-primary/5 via-white to-secondary/5 relative overflow-hidden">
       {/* Background decorations */}
       <motion.div
         animate={{ rotate: 360 }}
@@ -80,19 +80,19 @@ export default function FeaturedProductsCarousel() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-20"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-sm mb-4 md:mb-6">
             ✨ Curated Selection
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tighter">
             Featured <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Collections</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Handpicked premium gifts for every special moment
           </p>
         </motion.div>
@@ -101,7 +101,7 @@ export default function FeaturedProductsCarousel() {
         <div className="relative">
           {/* Main Carousel */}
           <motion.div
-            className="relative h-[500px] md:h-[550px] overflow-hidden rounded-3xl"
+            className="relative min-h-[650px] md:h-[600px] overflow-hidden rounded-3xl"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -114,13 +114,13 @@ export default function FeaturedProductsCarousel() {
                 transition={{ duration: 0.5 }}
                 className={`absolute inset-0 ${index === activeIndex ? 'pointer-events-auto' : 'pointer-events-none'}`}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full md:gap-12 items-center bg-white rounded-3xl overflow-hidden shadow-2xl">
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-12 h-full bg-white rounded-3xl overflow-hidden shadow-2xl">
                   {/* Image Side */}
                   <motion.div
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.6 }}
-                    className="h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden"
+                    className="h-64 md:h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0"
                   >
                     <img
                       src={product.image}
@@ -128,56 +128,56 @@ export default function FeaturedProductsCarousel() {
                       className="w-full h-full object-cover"
                     />
                   </motion.div>
-
+ 
                   {/* Content Side */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="flex flex-col justify-center p-8 md:p-12"
+                    className="flex flex-col justify-center p-6 md:p-12 overflow-y-auto"
                   >
                     {/* Badge */}
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="inline-block bg-primary text-white px-4 py-2 rounded-full font-bold text-sm mb-4 w-fit"
+                      className="inline-block bg-primary text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-sm mb-4 w-fit"
                     >
                       {product.badge}
                     </motion.span>
-
+ 
                     {/* Title & Description */}
-                    <h3 className="text-4xl font-black text-gray-900 mb-3">
+                    <h3 className="text-2xl md:text-4xl font-black text-gray-900 mb-2 md:mb-3 leading-tight">
                       {product.name}
                     </h3>
-                    <p className="text-lg text-gray-600 mb-6">
+                    <p className="text-sm md:text-lg text-gray-600 mb-6 line-clamp-2 md:line-clamp-none">
                       {product.description}
                     </p>
-
+ 
                     {/* Rating */}
-                    <div className="flex items-center gap-3 mb-8">
-                      <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2 md:gap-3 mb-6 md:mb-8">
+                      <div className="flex items-center gap-0.5 md:gap-1">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className="h-5 w-5 fill-yellow-400 text-yellow-400"
+                            className="h-4 w-4 md:h-5 md:w-5 fill-yellow-400 text-yellow-400"
                           />
                         ))}
                       </div>
-                      <span className="font-bold text-gray-900">{product.rating}</span>
-                      <span className="text-gray-500">({product.reviews} reviews)</span>
+                      <span className="font-bold text-gray-900 text-sm md:text-base">{product.rating}</span>
+                      <span className="text-gray-500 text-xs md:text-sm">({product.reviews} reviews)</span>
                     </div>
-
+ 
                     {/* Price */}
-                    <div className="flex items-end gap-3 mb-8">
-                      <span className="text-4xl font-black text-primary">₹{product.price}</span>
-                      <span className="text-xl text-gray-400 line-through">₹{product.originalPrice}</span>
-                      <span className="bg-secondary text-white px-3 py-1 rounded-lg font-bold ml-auto">
+                    <div className="flex items-center md:items-end gap-3 mb-6 md:mb-8 flex-wrap">
+                      <span className="text-3xl md:text-4xl font-black text-primary">₹{product.price}</span>
+                      <span className="text-lg md:text-xl text-gray-400 line-through">₹{product.originalPrice}</span>
+                      <span className="bg-secondary text-white px-2 py-0.5 md:px-3 md:py-1 rounded-lg font-bold text-xs md:text-sm">
                         {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
                       </span>
                     </div>
-
+ 
                     {/* CTAs */}
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 md:gap-4">
                       <motion.button
                         onClick={() => addToCart({
                           id: product.id,
@@ -187,17 +187,17 @@ export default function FeaturedProductsCarousel() {
                         })}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/50 transition-all"
+                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 text-white py-3 md:py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/50 transition-all text-sm md:text-base"
                       >
-                        <ShoppingCart className="h-5 w-5" />
+                        <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
                         Add to Cart
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="px-6 bg-gray-100 text-gray-900 rounded-xl font-bold hover:bg-gray-200 transition-all"
+                        className="px-4 md:px-6 bg-gray-100 text-gray-900 rounded-xl font-bold hover:bg-gray-200 transition-all"
                       >
-                        <Heart className="h-5 w-5" />
+                        <Heart className="h-4 w-4 md:h-5 md:w-5" />
                       </motion.button>
                     </div>
                   </motion.div>

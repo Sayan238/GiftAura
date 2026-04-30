@@ -160,64 +160,60 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Featured Sections with Animation */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
            <motion.div 
              initial={{ opacity: 0, scale: 0.95 }}
              whileInView={{ opacity: 1, scale: 1 }}
              viewport={{ once: true }}
-             className="relative h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden group shadow-2xl bg-gray-100"
+             className="relative h-[450px] rounded-[2.5rem] overflow-hidden group shadow-2xl bg-gray-100"
            >
               <img 
-                src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=800" 
+                src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=800" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 alt="Combos" 
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
-                 <h3 className="text-3xl md:text-4xl font-black text-white mb-2 md:mb-3">Signature Combos</h3>
-                 <p className="text-white/80 mb-6 md:mb-8 font-medium text-base md:text-lg">Perfect pairings for your loved ones.</p>
-                 <Link href="/category/combos" className="w-fit bg-secondary text-black px-8 md:px-10 py-3 md:py-4 rounded-full font-black text-sm hover:bg-white transition-all transform hover:-translate-y-1">Explore Now</Link>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
+                 <h3 className="text-2xl font-black text-white mb-2">Signature Combos</h3>
+                 <p className="text-white/80 mb-6 font-medium text-sm">Perfect pairings for your loved ones.</p>
+                 <Link href="/category/combos" className="w-fit bg-secondary text-black px-8 py-3 rounded-full font-black text-xs hover:bg-white transition-all transform hover:-translate-y-1">Explore Now</Link>
               </div>
            </motion.div>
            
-           <div className="grid grid-rows-2 gap-8">
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="relative rounded-[2rem] overflow-hidden group h-full shadow-xl bg-gray-100"
-              >
-                 <img 
-                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800" 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                    alt="Cakes" 
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                 />
-                 <div className="absolute inset-0 bg-black/30 flex items-center justify-between p-8 md:p-10">
-                    <h3 className="text-2xl md:text-3xl font-black text-white">Artisan Cakes</h3>
-                    <Link href="/category/cakes" className="bg-white/20 backdrop-blur-xl text-white p-4 md:p-5 rounded-full hover:bg-secondary hover:text-black transition-all transform hover:rotate-90"><ArrowRight className="h-5 w-5 md:h-6 md:w-6"/></Link>
-                 </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="relative rounded-[2rem] overflow-hidden group h-full shadow-xl bg-gray-100"
-              >
-                 <img 
-                    src="https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=800" 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                    alt="Gifts" 
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                 />
-                 <div className="absolute inset-0 bg-black/30 flex items-center justify-between p-8 md:p-10">
-                    <h3 className="text-2xl md:text-3xl font-black text-white">Luxury Hampers</h3>
-                    <Link href="/category/gifts" className="bg-white/20 backdrop-blur-xl text-white p-4 md:p-5 rounded-full hover:bg-secondary hover:text-black transition-all transform hover:rotate-90"><ArrowRight className="h-5 w-5 md:h-6 md:w-6"/></Link>
-                 </div>
-              </motion.div>
-           </div>
+           <motion.div 
+             initial={{ opacity: 0, scale: 0.95 }}
+             whileInView={{ opacity: 1, scale: 1 }}
+             viewport={{ once: true }}
+             className="relative h-[450px] rounded-[2.5rem] overflow-hidden group shadow-2xl bg-gray-100"
+           >
+              <img 
+                src="https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                alt="Cakes" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
+                 <h3 className="text-2xl font-black text-white mb-2">Artisan Cakes</h3>
+                 <p className="text-white/80 mb-6 font-medium text-sm">Decadent handcrafted delights.</p>
+                 <Link href="/category/cakes" className="w-fit bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-3 rounded-full font-black text-xs hover:bg-white hover:text-black transition-all transform hover:-translate-y-1">Shop Cakes</Link>
+              </div>
+           </motion.div>
+
+           <motion.div 
+             initial={{ opacity: 0, scale: 0.95 }}
+             whileInView={{ opacity: 1, scale: 1 }}
+             viewport={{ once: true }}
+             className="relative h-[450px] rounded-[2.5rem] overflow-hidden group shadow-2xl bg-gray-100"
+           >
+              <img 
+                src="https://images.pexels.com/photos/1020585/pexels-photo-1020585.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                alt="Hampers" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
+                 <h3 className="text-2xl font-black text-white mb-2">Luxury Hampers</h3>
+                 <p className="text-white/80 mb-6 font-medium text-sm">Premium curated gift boxes.</p>
+                 <Link href="/category/gifts" className="w-fit bg-secondary text-black px-8 py-3 rounded-full font-black text-xs hover:bg-white transition-all transform hover:-translate-y-1">View All</Link>
+              </div>
+           </motion.div>
         </div>
 
 
@@ -233,10 +229,10 @@ export default function HeroSection() {
            
            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { title: 'Golden Hour', img: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=400' },
-                { title: 'Midnight Magic', img: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=400' },
-                { title: 'Floral Fantasy', img: 'https://images.unsplash.com/photo-1512203530485-25a218a5da4c?auto=format&fit=crop&q=80&w=400' },
-                { title: 'Sweet Serenity', img: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=400' }
+                { title: 'Golden Hour', img: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { title: 'Midnight Magic', img: 'https://images.pexels.com/photos/1020585/pexels-photo-1020585.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { title: 'Floral Fantasy', img: 'https://images.pexels.com/photos/1395964/pexels-photo-1395964.jpeg?auto=compress&cs=tinysrgb&w=400' },
+                { title: 'Sweet Serenity', img: 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=400' }
               ].map((item, idx) => (
                 <motion.div 
                   key={idx}

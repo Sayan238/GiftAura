@@ -13,7 +13,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 999,
     discount: 40,
     rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=500',
+    image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500',
     stock: 8,
   },
   {
@@ -23,7 +23,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 850,
     discount: 41,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&q=80&w=500',
+    image: 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500',
     stock: 12,
   },
   {
@@ -33,7 +33,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 349,
     discount: 43,
     rating: 4.6,
-    image: 'https://images.unsplash.com/photo-1512203530485-25a218a5da4c?auto=format&fit=crop&q=80&w=500',
+    image: 'https://images.pexels.com/photos/1204463/pexels-photo-1204463.jpeg?auto=compress&cs=tinysrgb&w=500',
     stock: 25,
   },
   {
@@ -43,7 +43,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 549,
     discount: 36,
     rating: 4.4,
-    image: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&q=80&w=500',
+    image: 'https://images.pexels.com/photos/1413420/pexels-photo-1413420.jpeg?auto=compress&cs=tinysrgb&w=500',
     stock: 5,
   },
   {
@@ -53,7 +53,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 899,
     discount: 33,
     rating: 4.6,
-    image: 'https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&q=80&w=500',
+    image: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=500',
     stock: 18,
   },
   {
@@ -63,7 +63,7 @@ const FLASH_SALE_PRODUCTS = [
     originalPrice: 549,
     discount: 27,
     rating: 4.5,
-    image: 'https://images.unsplash.com/photo-1549462980-6a620041847c?auto=format&fit=crop&q=80&w=500',
+    image: 'https://images.pexels.com/photos/1020585/pexels-photo-1020585.jpeg?auto=compress&cs=tinysrgb&w=500',
     stock: 14,
   },
 ];
@@ -148,7 +148,7 @@ export default function FlashSales() {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-secondary/10 via-white to-primary/5 relative overflow-hidden">
+    <section className="pt-32 pb-24 md:py-32 bg-gradient-to-br from-secondary/10 via-white to-primary/5 relative overflow-hidden">
       {/* Animated background */}
       <motion.div
         animate={{ opacity: [0.5, 0.8, 0.5] }}
@@ -191,7 +191,7 @@ export default function FlashSales() {
 
         {/* Product Grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -206,7 +206,7 @@ export default function FlashSales() {
             >
               <div className="relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
                 {/* Image Container */}
-                <Link href={`/product/${product.id}`} className="relative h-48 bg-gray-100 overflow-hidden group/img">
+                <Link href={`/product/${product.id}`} className="relative aspect-square bg-gray-100 overflow-hidden group/img">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -218,39 +218,39 @@ export default function FlashSales() {
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    className="absolute top-3 right-3 bg-gradient-to-br from-secondary to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg"
+                    className="absolute top-2 right-2 bg-gradient-to-br from-secondary to-red-600 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-lg"
                   >
                     {product.discount}% OFF
                   </motion.div>
 
                   {/* Stock Alert */}
                   {product.stock <= 10 && (
-                    <div className="absolute top-3 left-3 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
-                      Only {product.stock} left!
+                    <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-0.5 rounded-full text-[9px] font-bold animate-pulse">
+                      {product.stock} left
                     </div>
                   )}
                 </Link>
 
                 {/* Content */}
-                <div className="flex-1 p-4 flex flex-col justify-between">
+                <div className="flex-1 p-3 md:p-4 flex flex-col justify-between">
                   {/* Title & Rating */}
-                  <div className="mb-3">
+                  <div className="mb-2 md:mb-3">
                     <Link href={`/product/${product.id}`}>
-                      <h3 className="font-bold text-gray-900 text-sm line-clamp-2 group-hover:text-primary transition-colors mb-2">
+                      <h3 className="font-bold text-gray-900 text-[11px] md:text-sm line-clamp-1 md:line-clamp-2 group-hover:text-primary transition-colors mb-1">
                         {product.name}
                       </h3>
                     </Link>
                     <div className="flex items-center gap-1">
-                      <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-xs font-bold text-gray-700">{product.rating}</span>
+                      <Star className="h-2.5 w-2.5 md:h-3.5 md:w-3.5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-[10px] md:text-xs font-bold text-gray-700">{product.rating}</span>
                     </div>
                   </div>
 
                   {/* Price */}
-                  <div className="mb-4">
-                    <div className="flex items-end gap-2">
-                      <span className="text-xl font-black text-secondary">₹{product.price}</span>
-                      <span className="text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
+                  <div className="mb-3 md:mb-4">
+                    <div className="flex items-end gap-1.5 md:gap-2 flex-wrap">
+                      <span className="text-sm md:text-xl font-black text-secondary">₹{product.price}</span>
+                      <span className="text-[9px] md:text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
                     </div>
                   </div>
 
@@ -264,9 +264,9 @@ export default function FlashSales() {
                     })}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full bg-gradient-to-r from-secondary to-red-600 hover:shadow-lg hover:shadow-secondary/50 text-white py-2 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+                    className="w-full bg-gradient-to-r from-secondary to-red-600 hover:shadow-lg hover:shadow-secondary/50 text-white py-1.5 md:py-2 rounded-lg md:rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-1 md:gap-2 text-[10px] md:text-sm"
                   >
-                    <ShoppingCart className="h-4 w-4" />
+                    <ShoppingCart className="h-3 w-3 md:h-4 md:w-4" />
                     Grab Now
                   </motion.button>
                 </div>
