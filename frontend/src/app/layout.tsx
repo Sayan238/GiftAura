@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import BackToTop from '@/components/common/BackToTop';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
 
@@ -22,14 +23,10 @@ export default function RootLayout({
           <WishlistProvider>
             <Navbar />
             <main className="flex-grow pt-[210px]">
-
-
-
-
-
               {children}
             </main>
             <Footer />
+            <BackToTop />
           </WishlistProvider>
         </CartProvider>
       </body>
