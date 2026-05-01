@@ -47,52 +47,52 @@ export default function TrendingGifts() {
   const { addToCart } = useCart();
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-20 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute top-10 right-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
         <motion.div
-          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-20"
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              Trending <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Gifts</span>
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-1 tracking-tighter">
+              Trending <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Gifts</span>
             </h2>
-            <p className="text-lg text-gray-600">Our most loved and bestselling products this week</p>
+            <p className="text-sm text-gray-500 font-medium">Our most loved and bestselling products this week</p>
           </div>
-          <Link href="/category/trending" className="text-primary font-bold text-lg hover:gap-2 transition-all duration-300 flex items-center gap-1">
+          <Link href="/category/trending" className="text-primary font-black text-xs uppercase tracking-widest hover:gap-2 transition-all duration-300 flex items-center gap-1 border-b-2 border-primary pb-1">
             View All <span>→</span>
           </Link>
         </motion.div>
 
         {/* Products Grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {TRENDING_PRODUCTS.map((product, index) => (
+          {TRENDING_PRODUCTS.map((product) => (
             <motion.div
               key={product.id}
               variants={itemVariants}
-              whileHover={{ y: -8 }}
+              whileHover={{ y: -6 }}
               className="group"
             >
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100">
+              <div className="relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col border border-gray-100 p-1.5">
                 {/* Product Image */}
-                <Link href={`/product/${product.id}`} className="block relative h-72 bg-gray-200 overflow-hidden group/img">
+                <Link href={`/product/${product.id}`} className="block relative h-36 md:h-44 bg-white flex items-center justify-center overflow-hidden group/img rounded-lg">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-contain group-hover/img:scale-105 transition-transform duration-500 p-2"
                   />
 
                   {/* Tag */}
@@ -100,67 +100,54 @@ export default function TrendingGifts() {
                     initial={{ opacity: 0, y: -10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className={`absolute top-4 left-4 bg-gradient-to-r ${getTagColor(product.tag)} text-white px-4 py-2 rounded-full text-xs font-bold uppercase shadow-lg`}
+                    className={`absolute top-1.5 left-1.5 bg-gradient-to-r ${getTagColor(product.tag)} text-white px-2 py-0.5 rounded-full text-[8px] font-bold uppercase shadow-sm`}
                   >
                     {product.tag}
                   </motion.div>
 
-                  {/* Wishlist button */}
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-all duration-300"
-                  >
-                    <Heart className="h-5 w-5" />
-                  </motion.button>
-
                   {/* Discount badge */}
-                  <div className="absolute bottom-4 right-4 bg-gradient-to-r from-secondary to-primary text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                  <div className="absolute bottom-1.5 right-1.5 bg-red-500 text-white px-1.5 py-0.5 rounded text-[8px] font-bold shadow-sm">
                     {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
                   </div>
                 </Link>
 
                 {/* Product Info */}
-                <div className="flex-1 p-6 flex flex-col justify-between">
+                <div className="flex-1 p-2 md:p-3 flex flex-col justify-between">
                   {/* Rating and reviews */}
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="flex items-center gap-1">
+                  <div className="mb-2">
+                    <div className="flex items-center gap-1 mb-1.5">
+                      <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`h-4 w-4 ${i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                            className={`h-2 w-2 md:h-2.5 md:w-2.5 ${i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`}
                           />
                         ))}
                       </div>
-                      <span className="text-sm font-bold text-gray-700">{product.rating}</span>
-                      <span className="text-sm text-gray-400">({product.reviews})</span>
+                      <span className="text-[9px] md:text-[10px] font-bold text-gray-400">{product.rating}</span>
                     </div>
 
                     {/* Product name */}
                     <Link href={`/product/${product.id}`}>
-                      <h3 className="font-bold text-gray-900 text-lg line-clamp-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary group-hover:bg-clip-text transition-all duration-300">
+                      <h3 className="font-bold text-gray-900 text-xs md:text-sm line-clamp-2 hover:text-primary transition-all duration-300 leading-tight">
                         {product.name}
                       </h3>
                     </Link>
                   </div>
 
                   {/* Price and action */}
-                  <div className="flex justify-between items-center gap-3 pt-4 border-t border-gray-100">
+                  <div className="flex justify-between items-center gap-2 pt-2 border-t border-gray-50">
                     <div className="flex-1">
-                      <p className="text-2xl font-black text-primary">₹{product.price}</p>
-                      <p className="text-sm text-gray-400 line-through">₹{product.originalPrice}</p>
+                      <p className="text-sm md:text-base font-black text-gray-900">₹{product.price}</p>
+                      <p className="text-[9px] text-gray-400 line-through">₹{product.originalPrice}</p>
                     </div>
                     <motion.button
                       onClick={() => addToCart({ id: String(product.id), name: product.name, price: product.price, image: product.image })}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="bg-gradient-to-br from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/50 text-white p-3 rounded-full transition-all duration-300 flex items-center justify-center col-span-1"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="bg-[#ffd814] text-gray-900 p-1.5 md:p-2 rounded-full hover:bg-[#f7ca00] shadow-sm border border-[#fcd200] transition-all duration-300 flex items-center justify-center"
                     >
-                      <ShoppingCart className="h-5 w-5" />
+                      <ShoppingCart className="h-3.5 w-3.5 md:h-4 md:w-4" />
                     </motion.button>
                   </div>
                 </div>
@@ -171,13 +158,13 @@ export default function TrendingGifts() {
 
         {/* Bottom CTA */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-10 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <Link href="/category/all" className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300">
+          <Link href="/category/all" className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary pb-1 transition-all">
             Explore All Popular Gifts →
           </Link>
         </motion.div>

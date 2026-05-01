@@ -64,7 +64,7 @@ const itemVariants = {
 
 export default function SocialProof() {
   return (
-    <section className="py-24 bg-gradient-to-br from-white via-primary/2 to-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-white via-primary/2 to-white relative overflow-hidden">
       {/* Background decorations */}
       <motion.div
         animate={{ rotate: 360 }}
@@ -77,29 +77,29 @@ export default function SocialProof() {
         className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-2.5 py-1 rounded-full font-bold text-[10px] mb-3 uppercase tracking-wider">
             ⭐ Customer Love
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Real Reviews from <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Real Customers</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Real Reviews from <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Real Customers</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See why thousands of customers trust us for their special moments
+          <p className="text-sm text-gray-500 max-w-lg mx-auto">
+            See why thousands trust us for their special moments
           </p>
         </motion.div>
 
         {/* Reviews Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -109,44 +109,41 @@ export default function SocialProof() {
             <motion.div
               key={review.id}
               variants={itemVariants}
-              whileHover={{ y: -8 }}
+              whileHover={{ y: -6 }}
               className="group"
             >
-              <div className="relative bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+              <div className="relative bg-white rounded-xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
                 {/* Quote Icon */}
-                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-primary to-secondary text-white p-3 rounded-full shadow-lg">
-                  <Quote className="h-5 w-5" />
+                <div className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-primary to-secondary text-white p-1.5 rounded-full shadow-md">
+                  <Quote className="h-3 w-3" />
                 </div>
 
                 {/* Rating */}
-                <div className="flex gap-1 mb-4">
+                <div className="flex gap-0.5 mb-2.5">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                      className="h-2.5 w-2.5 fill-yellow-400 text-yellow-400"
                     />
                   ))}
                 </div>
 
                 {/* Review Title */}
-                <h4 className="font-bold text-gray-900 text-lg mb-2">
+                <h4 className="font-bold text-gray-900 text-sm mb-1.5 leading-tight">
                   {review.title}
                 </h4>
 
                 {/* Review Text */}
-                <p className="text-gray-600 text-sm mb-6 flex-1 leading-relaxed">
+                <p className="text-gray-500 text-[11px] mb-4 flex-1 leading-relaxed italic">
                   "{review.text}"
                 </p>
 
-                {/* Divider */}
-                <div className="border-t border-gray-100 pt-4 mt-4"></div>
-
                 {/* Author */}
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{review.avatar}</span>
+                <div className="flex items-center gap-2 pt-3 border-t border-gray-50">
+                  <span className="text-xl">{review.avatar}</span>
                   <div className="flex-1">
-                    <p className="font-bold text-gray-900 text-sm">{review.name}</p>
-                    <p className="text-xs text-gray-500">{review.date}</p>
+                    <p className="font-black text-gray-900 text-[10px]">{review.name}</p>
+                    <p className="text-[9px] text-gray-400 font-medium">{review.date}</p>
                   </div>
                 </div>
               </div>
@@ -156,16 +153,13 @@ export default function SocialProof() {
 
         {/* CTA Section */}
         <motion.div
-          className="mt-20 text-center"
+          className="mt-10 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-lg text-gray-600 mb-6">
-            Join thousands of happy customers. Share your experience with GiftAura!
-          </p>
-          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300">
+          <button className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary pb-1 transition-all">
             Leave a Review
           </button>
         </motion.div>

@@ -58,34 +58,34 @@ const itemVariants = {
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-80 h-80 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full translate-x-1/4 translate-y-1/4" />
+      <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-secondary/5 rounded-full translate-x-1/4 translate-y-1/4" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full font-black text-[10px] uppercase tracking-widest mb-4">
             💡 Why Choose GiftAura?
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            We Make Gift Giving <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Effortless</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            We Make Gift Giving <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Effortless</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-500 max-w-xl mx-auto font-medium">
             Everything you need to send the perfect gift with confidence and ease
           </p>
         </motion.div>
 
         {/* Benefits Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -97,34 +97,27 @@ export default function WhyChooseUs() {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -6 }}
                 className="group"
               >
-                <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-primary/30 shadow-md hover:shadow-2xl transition-all duration-300 h-full">
+                <div className="relative bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center text-center">
                   {/* Icon Background */}
                   <motion.div
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 group-hover:from-primary/20 group-hover:to-secondary/20 mb-6 transition-all"
+                    className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gray-50 text-primary group-hover:bg-primary group-hover:text-white mb-4 transition-all"
                   >
-                    <Icon className="h-8 w-8 text-primary" />
+                    <Icon className="h-6 w-6" />
                   </motion.div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-base font-bold text-gray-900 mb-2 tracking-tight">
                     {benefit.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-xs text-gray-500 leading-relaxed font-medium">
                     {benefit.description}
                   </p>
-
-                  {/* Hover Line */}
-                  <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary origin-left rounded-b-2xl"
-                  />
                 </div>
               </motion.div>
             );
@@ -133,7 +126,7 @@ export default function WhyChooseUs() {
 
         {/* Stats Section */}
         <motion.div
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
+          className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -147,12 +140,12 @@ export default function WhyChooseUs() {
           ].map((stat, index) => (
             <div
               key={index}
-              className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 text-center border border-primary/10"
+              className="bg-gray-50 rounded-xl p-4 text-center border border-gray-100"
             >
-              <p className="text-3xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <p className="text-xl md:text-2xl font-black text-gray-900 tracking-tighter">
                 {stat.number}
               </p>
-              <p className="text-gray-600 font-medium mt-2">{stat.label}</p>
+              <p className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">{stat.label}</p>
             </div>
           ))}
         </motion.div>

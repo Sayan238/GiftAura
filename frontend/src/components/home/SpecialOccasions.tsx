@@ -32,39 +32,35 @@ const itemVariants = {
 
 export default function SpecialOccasions() {
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-0 right-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-20 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div
-            className="inline-flex items-center gap-2 bg-white border border-primary/20 px-4 py-2 rounded-full mb-6 shadow-sm"
-            whileHover={{ scale: 1.05 }}
-          >
-            <Gift className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-gray-700">Perfect for Every Occasion</span>
-          </motion.div>
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full font-black text-[10px] uppercase tracking-widest mb-4">
+            Perfect for Every Occasion
+          </span>
 
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-            Gifts by <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Occasion</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Gifts by <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Occasion</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Find curated gift collections for every special moment in your loved one's life
+          <p className="text-sm text-gray-500 max-w-xl mx-auto font-medium">
+            Find curated gift collections for every special moment in your life
           </p>
         </motion.div>
 
         {/* Occasions Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -74,64 +70,33 @@ export default function SpecialOccasions() {
             <Link href={occ.link} key={occ.id}>
               <motion.div
                 variants={itemVariants}
-                whileHover={{ y: -16, scale: 1.02 }}
+                whileHover={{ y: -6 }}
                 whileTap={{ scale: 0.98 }}
                 className="group relative"
               >
-                <div className={`relative overflow-hidden rounded-3xl md:rounded-[2.5rem] h-96 ${occ.image} shadow-2xl group-hover:shadow-3xl transition-all duration-300 cursor-pointer border-4 border-white/20`}>
-                  {/* Gradient overlay that changes on hover */}
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-all duration-500" />
-
+                <div className={`relative overflow-hidden rounded-2xl h-64 ${occ.image} shadow-sm group-hover:shadow-xl transition-all duration-300 cursor-pointer`}>
                   {/* Content positioning */}
-                  <div className="absolute inset-0 flex flex-col justify-end">
-                    {/* Emoji at top */}
-                    <motion.div
-                      className="absolute top-8 right-8 text-6xl"
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    >
+                  <div className="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/80 transition-all">
+                    {/* Emoji */}
+                    <div className="absolute top-4 right-4 text-3xl group-hover:scale-110 transition-transform">
                       {occ.emoji}
-                    </motion.div>
+                    </div>
 
-                    {/* Text content positioned at bottom */}
-                    <motion.div
-                      className="p-8 md:p-10 relative"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <h3 className="text-3xl md:text-4xl font-black text-white mb-3 leading-tight">
+                    {/* Text content */}
+                    <div className="relative">
+                      <h3 className="text-xl md:text-2xl font-black text-white mb-1 tracking-tight">
                         {occ.name}
                       </h3>
-                      <p className="text-white/90 text-lg font-semibold mb-4">
+                      <p className="text-white/80 text-xs font-bold mb-3 uppercase tracking-wider">
                         {occ.desc}
                       </p>
 
-                      {/* Action button that appears on hover */}
-                      <motion.div
-                        className="inline-flex items-center text-white text-sm font-bold gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        initial={{ x: -10 }}
-                        whileHover={{ x: 5 }}
-                      >
+                      <div className="flex items-center text-white text-[10px] font-black uppercase tracking-widest gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         Explore Collection
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          <ArrowRight className="h-4 w-4" />
-                        </motion.span>
-                      </motion.div>
-                    </motion.div>
+                        <ArrowRight className="h-3 w-3" />
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Shine effect on hover */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.6 }}
-                  />
                 </div>
               </motion.div>
             </Link>
@@ -140,15 +105,15 @@ export default function SpecialOccasions() {
 
         {/* Bottom CTA */}
         <motion.div
-          className="mt-20 text-center"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-10 text-center"
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <p className="text-gray-600 text-lg mb-6">Can't find what you're looking for?</p>
-          <Link href="/category/all" className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300">
-            Browse All Gifts →
+          <Link href="/category/all" className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary pb-1 transition-all">
+            Browse All Gifts
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </motion.div>
       </div>

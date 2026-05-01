@@ -113,15 +113,15 @@ export default function Navbar() {
     <>
       <div className="fixed w-full z-[9999] top-0 shadow-2xl">
         {/* Main Header */}
-        <nav className="bg-[#121212] text-white border-b border-white/5 py-4 relative">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4 md:gap-12">
+        <nav className="bg-[#121212] text-white border-b border-white/5 py-3 relative">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex items-center justify-between gap-4 md:gap-10">
           {/* Left: Hamburger & Logo */}
-          <div className="flex items-center gap-4 relative z-[10010]">
+          <div className="flex items-center gap-3 relative z-[10010]">
             <button 
               onClick={() => setIsOpen(true)}
-              className="lg:hidden p-2 hover:bg-white/5 rounded-full transition-colors"
+              className="lg:hidden p-1.5 hover:bg-white/5 rounded-full transition-colors"
             >
-              <Menu className="h-6 w-6 text-white" />
+              <Menu className="h-5 w-5 text-white" />
             </button>
             <Link 
               href="/" 
@@ -133,8 +133,8 @@ export default function Navbar() {
               }}
             >
               <div className="flex flex-col items-start leading-tight">
-                <span className="text-xl md:text-2xl font-black text-white tracking-tighter group-hover:text-secondary transition-colors">GiftAura</span>
-                <span className="text-[8px] md:text-[10px] text-secondary font-bold tracking-[0.2em] uppercase">Premium Gifting</span>
+                <span className="text-lg md:text-xl font-black text-white tracking-tighter group-hover:text-secondary transition-colors">GiftAura</span>
+                <span className="text-[7px] md:text-[8px] text-secondary font-bold tracking-[0.2em] uppercase">Premium Gifting</span>
               </div>
             </Link>
           </div>
@@ -203,8 +203,8 @@ export default function Navbar() {
             </div>
 
             <div className="flex-1 relative group mx-4">
-              <div className="relative flex items-center bg-white/5 border border-white/10 rounded-2xl px-6 py-3 focus-within:bg-white/10 focus-within:border-secondary/50 focus-within:ring-4 focus-within:ring-secondary/10 transition-all duration-500 backdrop-blur-md">
-                <Search className="h-5 w-5 text-gray-400 group-focus-within:text-secondary transition-colors" />
+              <div className="relative flex items-center bg-white/5 border border-white/10 rounded-xl px-5 py-2 focus-within:bg-white/10 focus-within:border-secondary/50 focus-within:ring-4 focus-within:ring-secondary/10 transition-all duration-500 backdrop-blur-md">
+                <Search className="h-4 w-4 text-gray-400 group-focus-within:text-secondary transition-colors" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -212,7 +212,7 @@ export default function Navbar() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleSearch}
                   placeholder="Search for perfection..."
-                  className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[15px] px-4 placeholder-gray-500 font-bold tracking-tight text-white"
+                  className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[14px] px-3 placeholder-gray-500 font-bold tracking-tight text-white"
                 />
               </div>
             </div>
@@ -228,12 +228,12 @@ export default function Navbar() {
             </button>
 
             <div 
-              className="relative py-2 hidden sm:block"
+              className="relative py-1.5 hidden sm:block"
               onMouseEnter={() => setActiveMenu('account')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-2 text-[12px] md:text-sm font-bold hover:text-secondary transition-colors px-3 md:px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                <User className="h-4 w-4" />
+              <button className="flex items-center gap-2 text-[11px] md:text-xs font-bold hover:text-secondary transition-colors px-2.5 md:px-3.5 py-1.5 bg-white/5 rounded-full border border-white/10">
+                <User className="h-3.5 w-3.5" />
                 <span className="hidden md:inline">Account</span>
               </button>
               
@@ -274,7 +274,7 @@ export default function Navbar() {
 
       {/* Premium Category Icon Bar (Scrollable on mobile) */}
       <div className="bg-white border-b border-gray-100 shadow-sm relative">
-        <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-start lg:justify-between overflow-x-auto whitespace-nowrap scrollbar-hide gap-2">
+        <div className="max-w-[1300px] mx-auto px-4 py-2 flex items-center justify-start lg:justify-between overflow-x-auto whitespace-nowrap scrollbar-hide gap-1">
           {[
             { name: 'Luxury Gifts', id: 'gifts', img: 'https://cdn-icons-png.flaticon.com/128/679/679821.png', link: '/category/gifts' },
             { name: 'Fresh Blooms', id: 'flowers', img: 'https://cdn-icons-png.flaticon.com/128/346/346167.png', link: '/category/flowers' },
@@ -285,11 +285,11 @@ export default function Navbar() {
             { name: 'Birthday', id: 'birthday', img: 'https://cdn-icons-png.flaticon.com/128/2413/2413074.png', link: '/category/birthday' },
             { name: 'Anniversary', id: 'anniversary', img: 'https://cdn-icons-png.flaticon.com/128/4151/4151351.png', link: '/category/anniversary' }
           ].map((cat) => (
-            <Link key={cat.name} href={cat.link} className="flex flex-col items-center gap-1.5 px-4 min-w-[90px] transition-all group">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gray-50 flex items-center justify-center transition-all group-hover:bg-[#121212] group-hover:shadow-xl group-hover:-translate-y-1">
-                <img src={cat.img} alt={cat.name} className="w-6 h-6 md:w-7 md:h-7 object-contain transition-all group-hover:invert group-hover:scale-110" />
+            <Link key={cat.name} href={cat.link} className="flex flex-col items-center gap-1 px-3 min-w-[80px] transition-all group">
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gray-50 flex items-center justify-center transition-all group-hover:bg-[#121212] group-hover:shadow-lg group-hover:-translate-y-0.5">
+                <img src={cat.img} alt={cat.name} className="w-5 h-5 md:w-6 md:h-6 object-contain transition-all group-hover:invert group-hover:scale-105" />
               </div>
-              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-wider text-gray-500 group-hover:text-[#121212] transition-colors">{cat.name}</span>
+              <span className="text-[7px] md:text-[9px] font-black uppercase tracking-wider text-gray-500 group-hover:text-[#121212] transition-colors">{cat.name}</span>
             </Link>
           ))}
         </div>

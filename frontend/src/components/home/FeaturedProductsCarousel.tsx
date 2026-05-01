@@ -69,30 +69,30 @@ export default function FeaturedProductsCarousel() {
   };
 
   return (
-    <section className="pt-32 pb-20 md:py-32 bg-gradient-to-br from-primary/5 via-white to-secondary/5 relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-primary/5 via-white to-secondary/5 relative overflow-hidden">
       {/* Background decorations */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity }}
-        className="absolute top-10 right-10 w-72 h-72 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl -z-10"
+        className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl -z-10"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-12 md:mb-20"
+          className="text-center mb-10 md:mb-12"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-sm mb-4 md:mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full font-bold text-[9px] md:text-xs mb-3 md:mb-4 uppercase tracking-wider">
             ✨ Curated Selection
           </span>
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tighter">
-            Featured <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Collections</span>
+          <h2 className="text-2xl md:text-4xl font-black text-gray-900 mb-2 tracking-tighter">
+            Featured <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Collections</span>
           </h2>
-          <p className="text-sm md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
+          <p className="text-sm md:text-base text-gray-500 max-w-xl mx-auto px-4">
             Handpicked premium gifts for every special moment
           </p>
         </motion.div>
@@ -101,7 +101,7 @@ export default function FeaturedProductsCarousel() {
         <div className="relative">
           {/* Main Carousel */}
           <motion.div
-            className="relative min-h-[650px] md:h-[600px] overflow-hidden rounded-3xl"
+            className="relative min-h-[440px] md:h-[380px] overflow-hidden rounded-2xl shadow-xl"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -114,70 +114,67 @@ export default function FeaturedProductsCarousel() {
                 transition={{ duration: 0.5 }}
                 className={`absolute inset-0 ${index === activeIndex ? 'pointer-events-auto' : 'pointer-events-none'}`}
               >
-                <div className="flex flex-col md:grid md:grid-cols-2 gap-0 md:gap-12 h-full bg-white rounded-3xl overflow-hidden shadow-2xl">
-                  {/* Image Side */}
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-0 h-full bg-white border border-gray-100 overflow-hidden">
+                  {/* Image Side - Fixed consistency */}
                   <motion.div
-                    initial={{ scale: 0.8 }}
+                    initial={{ scale: 1.05 }}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 0.6 }}
-                    className="h-64 md:h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0"
+                    transition={{ duration: 0.8 }}
+                    className="h-48 md:h-full relative overflow-hidden bg-gray-50"
                   >
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-black/5" />
                   </motion.div>
  
                   {/* Content Side */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    animate={{ opacity: index === activeIndex ? 1 : 0, x: index === activeIndex ? 0 : 20 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="flex flex-col justify-center p-6 md:p-12 overflow-y-auto"
+                    className="flex flex-col justify-center p-6 md:p-10"
                   >
                     {/* Badge */}
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="inline-block bg-primary text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-sm mb-4 w-fit"
-                    >
+                    <span className="inline-block bg-primary/10 text-primary px-3 py-0.5 rounded-full font-bold text-[9px] md:text-[10px] mb-3 md:mb-4 w-fit uppercase tracking-wider">
                       {product.badge}
-                    </motion.span>
- 
+                    </span>
+  
                     {/* Title & Description */}
-                    <h3 className="text-2xl md:text-4xl font-black text-gray-900 mb-2 md:mb-3 leading-tight">
+                    <h3 className="text-xl md:text-3xl font-black text-gray-900 mb-2 md:mb-3 leading-tight tracking-tight">
                       {product.name}
                     </h3>
-                    <p className="text-sm md:text-lg text-gray-600 mb-6 line-clamp-2 md:line-clamp-none">
+                    <p className="text-xs md:text-sm text-gray-500 mb-4 md:mb-6 line-clamp-2 md:line-clamp-none leading-relaxed">
                       {product.description}
                     </p>
- 
+  
                     {/* Rating */}
-                    <div className="flex items-center gap-2 md:gap-3 mb-6 md:mb-8">
-                      <div className="flex items-center gap-0.5 md:gap-1">
+                    <div className="flex items-center gap-2 mb-4 md:mb-6 bg-gray-50 w-fit px-3 py-1 rounded-full border border-gray-100">
+                      <div className="flex items-center gap-0.5">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className="h-4 w-4 md:h-5 md:w-5 fill-yellow-400 text-yellow-400"
+                            className="h-2.5 w-2.5 md:h-3 md:w-3 fill-yellow-400 text-yellow-400"
                           />
                         ))}
                       </div>
-                      <span className="font-bold text-gray-900 text-sm md:text-base">{product.rating}</span>
-                      <span className="text-gray-500 text-xs md:text-sm">({product.reviews} reviews)</span>
+                      <span className="font-bold text-gray-900 text-[10px] md:text-xs">{product.rating}</span>
+                      <span className="text-gray-400 text-[9px] md:text-[10px]">({product.reviews} reviews)</span>
                     </div>
- 
+  
                     {/* Price */}
-                    <div className="flex items-center md:items-end gap-3 mb-6 md:mb-8 flex-wrap">
-                      <span className="text-3xl md:text-4xl font-black text-primary">₹{product.price}</span>
-                      <span className="text-lg md:text-xl text-gray-400 line-through">₹{product.originalPrice}</span>
-                      <span className="bg-secondary text-white px-2 py-0.5 md:px-3 md:py-1 rounded-lg font-bold text-xs md:text-sm">
+                    <div className="flex items-baseline gap-3 mb-6 md:mb-8">
+                      <span className="text-2xl md:text-4xl font-black text-gray-900">₹{product.price}</span>
+                      <span className="text-sm md:text-lg text-gray-400 line-through">₹{product.originalPrice}</span>
+                      <span className="text-green-600 font-black text-xs md:text-sm">
                         {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
                       </span>
                     </div>
- 
+  
                     {/* CTAs */}
-                    <div className="flex gap-3 md:gap-4">
+                    <div className="flex gap-3 mt-auto md:mt-0">
                       <motion.button
                         onClick={() => addToCart({
                           id: product.id,
@@ -185,19 +182,19 @@ export default function FeaturedProductsCarousel() {
                           price: product.price,
                           image: product.image,
                         })}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex-1 bg-gradient-to-r from-primary to-primary/80 text-white py-3 md:py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/50 transition-all text-sm md:text-base"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex-1 bg-[#ffd814] text-gray-900 py-2.5 md:py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#f7ca00] shadow-md border border-[#fcd200] transition-all text-xs md:text-sm uppercase tracking-wider"
                       >
-                        <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
+                        <ShoppingCart className="h-4 w-4" />
                         Add to Cart
                       </motion.button>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="px-4 md:px-6 bg-gray-100 text-gray-900 rounded-xl font-bold hover:bg-gray-200 transition-all"
+                        className="p-2.5 md:p-3.5 bg-gray-50 text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-all border border-gray-200"
                       >
-                        <Heart className="h-4 w-4 md:h-5 md:w-5" />
+                        <Heart className="h-4 w-4" />
                       </motion.button>
                     </div>
                   </motion.div>
@@ -205,28 +202,30 @@ export default function FeaturedProductsCarousel() {
               </motion.div>
             ))}
           </motion.div>
-
+ 
           {/* Navigation Buttons */}
-          <motion.button
-            onClick={prevSlide}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-md border border-white/40 p-3 rounded-full shadow-lg hover:bg-white transition-all z-10"
-          >
-            <ChevronLeft className="h-6 w-6 text-gray-900" />
-          </motion.button>
-
-          <motion.button
-            onClick={nextSlide}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-md border border-white/40 p-3 rounded-full shadow-lg hover:bg-white transition-all z-10"
-          >
-            <ChevronRight className="h-6 w-6 text-gray-900" />
-          </motion.button>
+          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-2 md:-mx-6 md:px-0 z-10 pointer-events-none">
+            <motion.button
+              onClick={prevSlide}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="bg-white/90 backdrop-blur-md border border-gray-200 p-2 md:p-3 rounded-full shadow-lg hover:bg-white transition-all pointer-events-auto"
+            >
+              <ChevronLeft className="h-4 w-4 md:h-6 md:w-6 text-gray-900" />
+            </motion.button>
+  
+            <motion.button
+              onClick={nextSlide}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="bg-white/90 backdrop-blur-md border border-gray-200 p-2 md:p-3 rounded-full shadow-lg hover:bg-white transition-all pointer-events-auto"
+            >
+              <ChevronRight className="h-4 w-4 md:h-6 md:w-6 text-gray-900" />
+            </motion.button>
+          </div>
 
           {/* Dot Indicators */}
-          <div className="flex justify-center gap-3 mt-8">
+          <div className="flex justify-center gap-2 md:gap-3 mt-8">
             {FEATURED_PRODUCTS.map((_, index) => (
               <motion.button
                 key={index}
@@ -234,8 +233,8 @@ export default function FeaturedProductsCarousel() {
                 whileHover={{ scale: 1.2 }}
                 className={`transition-all rounded-full ${
                   index === activeIndex
-                    ? 'bg-primary w-8 h-3'
-                    : 'bg-gray-300 w-3 h-3 hover:bg-gray-400'
+                    ? 'bg-secondary w-6 md:w-10 h-1.5 md:h-2'
+                    : 'bg-gray-300 w-1.5 md:w-2 h-1.5 md:h-2 hover:bg-gray-400'
                 }`}
               />
             ))}

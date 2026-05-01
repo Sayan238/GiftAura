@@ -60,7 +60,7 @@ export default function FAQ() {
   const [openId, setOpenId] = useState<number | null>(null);
 
   return (
-    <section className="py-24 bg-gradient-to-br from-white via-secondary/2 to-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-white via-secondary/2 to-white relative overflow-hidden">
       {/* Background decorations */}
       <motion.div
         animate={{ rotate: 360 }}
@@ -68,10 +68,10 @@ export default function FAQ() {
         className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl -z-10"
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -81,22 +81,22 @@ export default function FAQ() {
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 mb-6"
+            className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4"
           >
-            <HelpCircle className="h-8 w-8 text-primary" />
+            <HelpCircle className="h-6 w-6 text-primary" />
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Frequently Asked <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Questions</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Frequently Asked <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Questions</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-500 max-w-xl mx-auto font-medium">
             Find answers to common questions about our services and policies
           </p>
         </motion.div>
 
         {/* FAQs List */}
         <motion.div
-          className="space-y-4"
+          className="space-y-3"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -111,11 +111,11 @@ export default function FAQ() {
               <motion.button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
                 className="w-full text-left"
-                whileHover={{ x: 4 }}
+                whileHover={{ x: 2 }}
               >
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 p-6">
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 p-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-gray-900 pr-8">
+                    <h3 className="text-sm font-bold text-gray-900 pr-8 tracking-tight">
                       {faq.question}
                     </h3>
                     <motion.div
@@ -123,7 +123,7 @@ export default function FAQ() {
                       transition={{ duration: 0.3 }}
                       className="flex-shrink-0"
                     >
-                      <ChevronDown className="h-6 w-6 text-primary" />
+                      <ChevronDown className="h-5 w-5 text-primary" />
                     </motion.div>
                   </div>
                 </div>
@@ -139,8 +139,8 @@ export default function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-t-0 border-gray-100 rounded-b-2xl p-6 mt-1">
-                      <p className="text-gray-700 leading-relaxed">
+                    <div className="bg-gray-50 border border-t-0 border-gray-100 rounded-b-xl p-4 mt-0.5">
+                      <p className="text-xs text-gray-600 leading-relaxed font-medium">
                         {faq.answer}
                       </p>
                     </div>
@@ -153,19 +153,19 @@ export default function FAQ() {
 
         {/* CTA */}
         <motion.div
-          className="mt-16 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl p-8 text-center border border-primary/20"
+          className="mt-12 bg-gray-50 rounded-2xl p-6 text-center border border-gray-100"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">
+          <h3 className="text-lg font-black text-gray-900 mb-2 tracking-tighter">
             Still have questions?
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-xs text-gray-500 mb-4 font-medium">
             Our support team is available 24/7 to help you with any concerns
           </p>
-          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-primary/30 transition-all">
+          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-widest hover:shadow-lg transition-all">
             Contact Support
           </button>
         </motion.div>

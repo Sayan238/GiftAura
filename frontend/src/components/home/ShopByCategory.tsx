@@ -73,34 +73,34 @@ const itemVariants = {
 
 export default function ShopByCategory() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full translate-x-1/4 translate-y-1/4" />
+      <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-secondary/5 rounded-full translate-x-1/4 translate-y-1/4" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-2.5 py-1 rounded-full font-bold text-[10px] mb-3 uppercase tracking-wider">
             🛍️ Shop by Category
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Browse Our <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Collections</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Browse Our <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Collections</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Explore our wide range of beautifully curated gift categories
+          <p className="text-sm text-gray-500 max-w-lg mx-auto">
+            Explore our wide range of premium gift categories
           </p>
         </motion.div>
 
         {/* Categories Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -112,11 +112,11 @@ export default function ShopByCategory() {
               <motion.div
                 key={category.id}
                 variants={itemVariants}
-                whileHover={{ y: -12, scale: 1.03 }}
+                whileHover={{ y: -6, scale: 1.02 }}
                 className="group"
               >
                 <Link href={`/category/${category.slug}`}>
-                  <div className={`relative h-full rounded-3xl p-8 overflow-hidden cursor-pointer transition-all duration-300 bg-gradient-to-br ${category.lightColor} border border-gray-100 shadow-lg hover:shadow-2xl`}>
+                  <div className={`relative h-full rounded-xl p-5 overflow-hidden cursor-pointer transition-all duration-300 bg-gradient-to-br ${category.lightColor} border border-gray-100 shadow-sm hover:shadow-lg`}>
                     {/* Background gradient overlay */}
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -124,51 +124,39 @@ export default function ShopByCategory() {
                       className={`absolute inset-0 bg-gradient-to-br ${category.color}`}
                     />
 
-                    {/* Floating decorative element */}
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity }}
-                      className={`absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br ${category.color} opacity-10`}
-                    />
-
                     {/* Content */}
                     <div className="relative flex flex-col h-full">
                       {/* Icon & Emoji */}
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center gap-2 mb-3">
                         <motion.div
-                          className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${category.color} text-white shadow-lg`}
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.6 }}
+                          className={`inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br ${category.color} text-white shadow-sm`}
+                          whileHover={{ rotate: 15 }}
                         >
-                          <Icon className="h-7 w-7" />
+                          <Icon className="h-5 w-5" />
                         </motion.div>
-                        <span className="text-4xl">{category.emoji}</span>
+                        <span className="text-xl">{category.emoji}</span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="relative text-2xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                      <h3 className="relative text-lg font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors tracking-tight">
                         {category.name}
                       </h3>
 
                       {/* Description */}
-                      <p className="relative text-gray-600 mb-4 flex-1">
+                      <p className="relative text-gray-500 text-[11px] mb-3 flex-1 line-clamp-2 leading-relaxed">
                         {category.description}
                       </p>
 
-                      {/* Count */}
+                      {/* Count & CTA */}
                       <div className="relative">
-                        <p className="text-sm font-semibold text-gray-700 mb-4">
+                        <p className="text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-widest">
                           {category.count}
                         </p>
 
-                        {/* CTA */}
-                        <motion.div
-                          className="inline-flex items-center gap-2 text-primary font-bold group-hover/link:text-secondary transition-colors"
-                          whileHover={{ x: 4 }}
-                        >
-                          <span>Explore Now</span>
-                          <ArrowRight className="h-5 w-5" />
-                        </motion.div>
+                        <div className="inline-flex items-center gap-1.5 text-primary font-black text-[10px] uppercase tracking-wider">
+                          <span>Explore</span>
+                          <ArrowRight className="h-3 w-3" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -186,9 +174,9 @@ export default function ShopByCategory() {
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <Link href="/category/all" className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300">
+          <Link href="/category/all" className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg hover:shadow-primary/30 transition-all">
             View All Categories
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </motion.div>
       </div>

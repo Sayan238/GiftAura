@@ -4,61 +4,61 @@ import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'luci
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+    <footer className="bg-[#121212] text-white pt-12 pb-6">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <span className="text-3xl font-bold text-primary tracking-tight mb-6 flex">GiftAura</span>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            <span className="text-2xl font-black text-secondary tracking-tighter mb-4 flex">GiftAura</span>
+            <p className="text-gray-400 text-xs leading-relaxed mb-4 max-w-xs">
               Delivering happiness & beautiful surprises. Premium gifting platform for flowers, cakes, jewellery, and personalized gifts.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
-                <Facebook className="h-5 w-5" />
+            <div className="flex space-x-3">
+              <a href="#" className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-secondary hover:text-black transition-all">
+                <Facebook className="h-4 w-4" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
-                <Twitter className="h-5 w-5" />
+              <a href="#" className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-secondary hover:text-black transition-all">
+                <Twitter className="h-4 w-4" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
-                <Instagram className="h-5 w-5" />
+              <a href="#" className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-secondary hover:text-black transition-all">
+                <Instagram className="h-4 w-4" />
               </a>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-6">Categories</h3>
-            <ul className="space-y-3 pb-2 text-sm text-gray-400">
-              <li><Link href="/category/flowers" className="hover:text-primary transition-colors">Fresh Flowers</Link></li>
-              <li><Link href="/category/cakes" className="hover:text-primary transition-colors">Delicious Cakes</Link></li>
-              <li><Link href="/category/jewellery" className="hover:text-primary transition-colors">Premium Jewellery</Link></li>
-              <li><Link href="/category/gifts" className="hover:text-primary transition-colors">Personalized Gifts</Link></li>
-              <li><Link href="/category/hampers" className="hover:text-primary transition-colors">Gift Hampers</Link></li>
+            <h3 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4">Categories</h3>
+            <ul className="space-y-2 text-xs text-gray-400 font-bold">
+              <li><Link href="/category/flowers" className="hover:text-secondary transition-colors">Fresh Flowers</Link></li>
+              <li><Link href="/category/cakes" className="hover:text-secondary transition-colors">Delicious Cakes</Link></li>
+              <li><Link href="/category/jewellery" className="hover:text-secondary transition-colors">Premium Jewellery</Link></li>
+              <li><Link href="/category/gifts" className="hover:text-secondary transition-colors">Personalized Gifts</Link></li>
+              <li><Link href="/category/hampers" className="hover:text-secondary transition-colors">Gift Hampers</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-6">Customer Service</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
-              <li><Link href="/track" className="hover:text-primary transition-colors">Track Order</Link></li>
-              <li><Link href="/shipping" className="hover:text-primary transition-colors">Shipping Policy</Link></li>
-              <li><Link href="/faq" className="hover:text-primary transition-colors">FAQs</Link></li>
+            <h3 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4">Customer Service</h3>
+            <ul className="space-y-2 text-xs text-gray-400 font-bold">
+              <li><Link href="/contact" className="hover:text-secondary transition-colors">Contact Us</Link></li>
+              <li><Link href="/track" className="hover:text-secondary transition-colors">Track Order</Link></li>
+              <li><Link href="/shipping" className="hover:text-secondary transition-colors">Shipping Policy</Link></li>
+              <li><Link href="/faq" className="hover:text-secondary transition-colors">FAQs</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-6">Contact Info</h3>
-            <ul className="space-y-4 text-sm text-gray-400">
+            <h3 className="text-xs font-black uppercase tracking-widest text-white/40 mb-4">Contact Info</h3>
+            <ul className="space-y-3 text-xs text-gray-400 font-bold">
               <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-3 text-primary shrink-0" />
-                <span>123 Gifting Street, Cyber City, Techville 400012</span>
+                <MapPin className="h-4 w-4 mr-2 text-secondary shrink-0" />
+                <span className="leading-tight">123 Gifting Street, Cyber City, Techville 400012</span>
               </li>
               <li className="flex items-center">
-                <Phone className="h-5 w-5 mr-3 text-primary shrink-0" />
+                <Phone className="h-4 w-4 mr-2 text-secondary shrink-0" />
                 <span>+1 (800) 123-4567</span>
               </li>
               <li className="flex items-center">
-                <Mail className="h-5 w-5 mr-3 text-primary shrink-0" />
+                <Mail className="h-4 w-4 mr-2 text-secondary shrink-0" />
                 <span>support@giftaura.com</span>
               </li>
             </ul>

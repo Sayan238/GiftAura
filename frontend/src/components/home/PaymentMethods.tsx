@@ -63,34 +63,34 @@ const itemVariants = {
 
 export default function PaymentMethods() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/5 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-secondary/5 to-transparent rounded-full translate-x-1/3 translate-y-1/3" />
+      <div className="absolute top-0 left-0 w-80 h-80 bg-gradient-to-br from-primary/5 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-secondary/5 to-transparent rounded-full translate-x-1/3 translate-y-1/3" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full font-black text-[10px] uppercase tracking-widest mb-4">
             💳 Payment Options
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Multiple Payment <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Methods</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Multiple Payment <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Methods</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-500 max-w-xl mx-auto font-medium">
             Choose the payment method that works best for you
           </p>
         </motion.div>
 
         {/* Payment Methods Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -102,32 +102,25 @@ export default function PaymentMethods() {
               <motion.div
                 key={method.id}
                 variants={itemVariants}
-                whileHover={{ y: -10, scale: 1.02 }}
+                whileHover={{ y: -6 }}
                 className="group"
               >
-                <div className="relative h-full rounded-2xl bg-white border border-gray-100 p-6 shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                  {/* Gradient overlay on hover */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 0.05 }}
-                    className={`absolute inset-0 bg-gradient-to-br ${method.color}`}
-                  />
-
+                <div className="relative h-full rounded-xl bg-white border border-gray-100 p-4 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col items-center text-center">
                   {/* Icon */}
                   <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    whileInView={{ scale: 1, rotate: 0 }}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    className={`relative inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br ${method.color} text-white mb-4 shadow-lg`}
+                    className={`relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${method.color} text-white mb-4 shadow-md`}
                   >
-                    <Icon className="h-7 w-7" />
+                    <Icon className="h-6 w-6" />
                   </motion.div>
 
                   {/* Content */}
-                  <h3 className="relative font-bold text-gray-900 text-lg mb-2">
+                  <h3 className="relative font-bold text-gray-900 text-sm mb-1 tracking-tight">
                     {method.name}
                   </h3>
-                  <p className="relative text-gray-600 text-sm leading-relaxed">
+                  <p className="relative text-[10px] text-gray-500 font-medium leading-relaxed">
                     {method.description}
                   </p>
                 </div>
@@ -138,66 +131,52 @@ export default function PaymentMethods() {
 
         {/* Security Features */}
         <motion.div
-          className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl p-8 md:p-12 border border-primary/20"
+          className="bg-gray-50 rounded-2xl p-6 md:p-10 border border-gray-100"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             {/* Left side - Text */}
             <div className="flex flex-col justify-center">
-              <h3 className="text-3xl font-black text-gray-900 mb-4">
+              <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-4 tracking-tighter">
                 Your Payment is <span className="text-primary">100% Safe</span>
               </h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl mt-1">✓</span>
-                  <div>
-                    <p className="font-bold text-gray-900">PCI DSS Compliant</p>
-                    <p className="text-sm text-gray-600">Industry standard compliance</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl mt-1">✓</span>
-                  <div>
-                    <p className="font-bold text-gray-900">SSL 256-bit Encryption</p>
-                    <p className="text-sm text-gray-600">Bank-level security</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl mt-1">✓</span>
-                  <div>
-                    <p className="font-bold text-gray-900">Fraud Protection</p>
-                    <p className="text-sm text-gray-600">Advanced monitoring systems</p>
-                  </div>
-                </li>
+              <ul className="grid grid-cols-1 gap-3">
+                {[
+                  { title: 'PCI DSS Compliant', desc: 'Industry standard compliance' },
+                  { title: 'SSL 256-bit Encryption', desc: 'Bank-level security' },
+                  { title: 'Fraud Protection', desc: 'Advanced monitoring' }
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                      <span className="text-green-600 text-xs">✓</span>
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900 text-xs">{feature.title}</p>
+                      <p className="text-[10px] text-gray-500 font-medium">{feature.desc}</p>
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* Right side - Stats */}
-            <div className="grid grid-cols-2 gap-6">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-2xl p-6 text-center shadow-md"
-              >
-                <p className="text-3xl font-black text-primary">99.9%</p>
-                <p className="text-sm text-gray-600 font-medium mt-2">Success Rate</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-2xl p-6 text-center shadow-md"
-              >
-                <p className="text-3xl font-black text-secondary">0.1s</p>
-                <p className="text-sm text-gray-600 font-medium mt-2">Avg. Processing</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-2xl p-6 text-center shadow-md col-span-2"
-              >
-                <p className="text-3xl font-black text-primary">24/7</p>
-                <p className="text-sm text-gray-600 font-medium mt-2">Support Available</p>
-              </motion.div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { val: '99.9%', label: 'Success Rate' },
+                { val: '0.1s', label: 'Processing' },
+                { val: '24/7', label: 'Support', full: true }
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className={`bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm ${stat.full ? 'col-span-2' : ''}`}
+                >
+                  <p className="text-xl md:text-2xl font-black text-primary tracking-tighter">{stat.val}</p>
+                  <p className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </motion.div>

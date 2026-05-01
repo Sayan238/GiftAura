@@ -105,19 +105,19 @@ function CountdownTimer() {
   }, []);
 
   return (
-    <div className="flex items-center gap-3 text-lg font-bold">
-      <Clock className="h-5 w-5 text-secondary animate-pulse" />
+    <div className="flex items-center gap-2 text-base font-bold">
+      <Clock className="h-4 w-4 text-secondary animate-pulse" />
       <div className="flex gap-1">
-        <span className="bg-secondary text-white px-3 py-1 rounded-lg">
-          {String(timeLeft.hours).padStart(2, '0')}h
+        <span className="bg-secondary text-white px-2 py-1 rounded-lg min-w-[32px] text-center">
+          {String(timeLeft.hours).padStart(2, '0')}
         </span>
-        <span className="text-gray-600">:</span>
-        <span className="bg-secondary text-white px-3 py-1 rounded-lg">
-          {String(timeLeft.minutes).padStart(2, '0')}m
+        <span className="text-gray-400">:</span>
+        <span className="bg-secondary text-white px-2 py-1 rounded-lg min-w-[32px] text-center">
+          {String(timeLeft.minutes).padStart(2, '0')}
         </span>
-        <span className="text-gray-600">:</span>
-        <span className="bg-secondary text-white px-3 py-1 rounded-lg">
-          {String(timeLeft.seconds).padStart(2, '0')}s
+        <span className="text-gray-400">:</span>
+        <span className="bg-secondary text-white px-2 py-1 rounded-lg min-w-[32px] text-center">
+          {String(timeLeft.seconds).padStart(2, '0')}
         </span>
       </div>
     </div>
@@ -148,43 +148,36 @@ export default function FlashSales() {
   };
 
   return (
-    <section className="pt-32 pb-24 md:py-32 bg-gradient-to-br from-secondary/10 via-white to-primary/5 relative overflow-hidden">
-      {/* Animated background */}
-      <motion.div
-        animate={{ opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -z-10"
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-secondary/5 via-white to-primary/5 relative overflow-hidden">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header with Timer */}
         <motion.div
-          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 bg-white rounded-3xl p-8 border border-secondary/20 shadow-lg"
+          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 bg-white rounded-2xl p-6 border border-secondary/20 shadow-md"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="inline-block bg-gradient-to-r from-secondary to-secondary/70 text-white px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2">
-                <Zap className="h-4 w-4" /> FLASH SALE
+            <div className="flex items-center gap-3 mb-2">
+              <span className="inline-block bg-secondary text-white px-3 py-1 rounded-full font-bold text-[10px] flex items-center gap-1.5 uppercase tracking-wider">
+                <Zap className="h-3.5 w-3.5" /> FLASH SALE
               </span>
-              <span className="text-xs font-bold text-secondary bg-secondary/10 px-3 py-1 rounded-full">
-                LIMITED TIME
+              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2.5 py-1 rounded-full uppercase tracking-widest">
+                Limited Time
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-2">
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-1">
               Massive <span className="text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text">Discounts</span> Today!
             </h2>
-            <p className="text-lg text-gray-600 max-w-xl">
-              Don't miss out! These jaw-dropping deals are only available for a limited time. Grab your favorites before they're gone!
+            <p className="text-sm text-gray-500 font-medium">
+              Premium deals available for a limited time. Grab yours before they vanish!
             </p>
           </div>
 
           {/* Countdown Timer */}
-          <div className="flex-shrink-0 bg-gradient-to-br from-secondary/20 to-transparent p-6 rounded-2xl border-2 border-secondary/30">
-            <p className="text-sm text-gray-600 font-semibold mb-3 text-center">Ends In</p>
+          <div className="flex-shrink-0 bg-secondary/5 p-4 rounded-xl border border-secondary/10">
+            <p className="text-[10px] text-gray-400 font-bold mb-2 uppercase tracking-widest text-center">Sale Ends In</p>
             <CountdownTimer />
           </div>
         </motion.div>
@@ -197,16 +190,16 @@ export default function FlashSales() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {FLASH_SALE_PRODUCTS.map((product, index) => (
+          {FLASH_SALE_PRODUCTS.map((product) => (
             <motion.div
               key={product.id}
               variants={itemVariants}
-              whileHover={{ y: -8 }}
+              whileHover={{ y: -6 }}
               className="group"
             >
-              <div className="relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+              <div className="relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col p-1.5">
                 {/* Image Container */}
-                <Link href={`/product/${product.id}`} className="relative aspect-square bg-gray-100 overflow-hidden group/img">
+                <Link href={`/product/${product.id}`} className="relative aspect-square bg-gray-50 overflow-hidden group/img rounded-lg">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -214,47 +207,42 @@ export default function FlashSales() {
                   />
 
                   {/* Discount Badge */}
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    className="absolute top-2 right-2 bg-gradient-to-br from-secondary to-red-600 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-lg"
-                  >
+                  <div className="absolute top-1.5 right-1.5 bg-secondary text-white px-1.5 py-0.5 rounded text-[9px] font-bold shadow-md">
                     {product.discount}% OFF
-                  </motion.div>
+                  </div>
 
                   {/* Stock Alert */}
                   {product.stock <= 10 && (
-                    <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-0.5 rounded-full text-[9px] font-bold animate-pulse">
-                      {product.stock} left
+                    <div className="absolute top-1.5 left-1.5 bg-orange-500 text-white px-1.5 py-0.5 rounded text-[8px] font-bold uppercase">
+                      Only {product.stock} left
                     </div>
                   )}
                 </Link>
 
                 {/* Content */}
-                <div className="flex-1 p-3 md:p-4 flex flex-col justify-between">
+                <div className="flex-1 p-2 md:p-3 flex flex-col justify-between">
                   {/* Title & Rating */}
-                  <div className="mb-2 md:mb-3">
+                  <div className="mb-2">
                     <Link href={`/product/${product.id}`}>
-                      <h3 className="font-bold text-gray-900 text-[11px] md:text-sm line-clamp-1 md:line-clamp-2 group-hover:text-primary transition-colors mb-1">
+                      <h3 className="font-bold text-gray-900 text-[11px] md:text-xs line-clamp-2 group-hover:text-primary transition-colors leading-tight mb-1">
                         {product.name}
                       </h3>
                     </Link>
                     <div className="flex items-center gap-1">
-                      <Star className="h-2.5 w-2.5 md:h-3.5 md:w-3.5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-[10px] md:text-xs font-bold text-gray-700">{product.rating}</span>
+                      <Star className="h-2.5 w-2.5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-[10px] font-bold text-gray-500">{product.rating}</span>
                     </div>
                   </div>
 
                   {/* Price */}
-                  <div className="mb-3 md:mb-4">
-                    <div className="flex items-end gap-1.5 md:gap-2 flex-wrap">
-                      <span className="text-sm md:text-xl font-black text-secondary">₹{product.price}</span>
-                      <span className="text-[9px] md:text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
+                  <div className="mb-3">
+                    <div className="flex items-end gap-1.5 flex-wrap">
+                      <span className="text-sm md:text-base font-black text-secondary">₹{product.price}</span>
+                      <span className="text-[9px] text-gray-400 line-through">₹{product.originalPrice}</span>
                     </div>
                   </div>
 
-                  {/* Add to Cart Button */}
+                  {/* Grab Now Button - Amazon style */}
                   <motion.button
                     onClick={() => addToCart({
                       id: product.id,
@@ -262,11 +250,11 @@ export default function FlashSales() {
                       price: product.price,
                       image: product.image,
                     })}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full bg-gradient-to-r from-secondary to-red-600 hover:shadow-lg hover:shadow-secondary/50 text-white py-1.5 md:py-2 rounded-lg md:rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-1 md:gap-2 text-[10px] md:text-sm"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 py-1.5 rounded-lg font-bold shadow-sm border border-[#fcd200] transition-all duration-300 flex items-center justify-center gap-1.5 text-[10px]"
                   >
-                    <ShoppingCart className="h-3 w-3 md:h-4 md:w-4" />
+                    <ShoppingCart className="h-3 w-3" />
                     Grab Now
                   </motion.button>
                 </div>
@@ -277,14 +265,14 @@ export default function FlashSales() {
 
         {/* CTA */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-10 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <Link href="/flash-sale" className="inline-flex items-center gap-2 bg-gradient-to-r from-secondary to-primary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-secondary/40 transition-all duration-300">
-            <Zap className="h-5 w-5" />
+          <Link href="/flash-sale" className="inline-flex items-center gap-2 text-secondary hover:text-primary font-bold text-sm transition-colors border-b-2 border-secondary pb-1 uppercase tracking-widest">
+            <Zap className="h-4 w-4" />
             View All Flash Deals
           </Link>
         </motion.div>

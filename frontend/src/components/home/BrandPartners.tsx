@@ -75,34 +75,34 @@ const itemVariants = {
 
 export default function BrandPartners() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-white relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/5 rounded-full translate-x-1/4 translate-y-1/4" />
+      <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-secondary/5 rounded-full translate-x-1/4 translate-y-1/4" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full font-black text-[10px] uppercase tracking-widest mb-4">
             🤝 Our Partners
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Trusted Brand <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Partners</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Trusted Brand <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Partners</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-500 max-w-xl mx-auto font-medium">
             Partnering with the best brands to bring you premium quality gifts
           </p>
         </motion.div>
 
         {/* Brands Grid */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-12"
+          className="grid grid-cols-4 md:grid-cols-8 gap-3 mb-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -112,35 +112,19 @@ export default function BrandPartners() {
             <motion.div
               key={brand.id}
               variants={itemVariants}
-              whileHover={{ y: -8, scale: 1.1 }}
+              whileHover={{ y: -4 }}
               className="group"
             >
-              <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 text-center h-full flex flex-col items-center justify-center">
+              <div className="relative bg-white rounded-xl p-3 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 text-center h-full flex flex-col items-center justify-center">
                 {/* Logo */}
-                <motion.div
-                  className="text-5xl mb-3"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, repeatType: "loop" }}
-                >
+                <div className="text-2xl mb-2">
                   {brand.logo}
-                </motion.div>
+                </div>
 
                 {/* Name */}
-                <h3 className="font-bold text-gray-900 text-sm mb-2">
+                <h3 className="font-bold text-gray-900 text-[9px] uppercase tracking-tighter">
                   {brand.name}
                 </h3>
-
-                {/* Description */}
-                <p className="text-xs text-gray-600 text-center leading-tight">
-                  {brand.description}
-                </p>
-
-                {/* Hover Line */}
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary origin-left rounded-b-2xl"
-                />
               </div>
             </motion.div>
           ))}
@@ -148,59 +132,40 @@ export default function BrandPartners() {
 
         {/* Partnership Info */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl p-8 md:p-12 border border-primary/20"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 rounded-2xl p-6 border border-gray-100"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          {/* Quality Assurance */}
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-              <span className="text-3xl">✓</span>
+          {[
+            { icon: '✓', title: 'Quality Assured', desc: 'Vetted standards' },
+            { icon: '🎯', title: 'Wide Selection', desc: 'Diverse options' },
+            { icon: '💰', title: 'Best Prices', desc: 'Direct partnerships' }
+          ].map((info, i) => (
+            <div key={i} className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                {info.icon}
+              </div>
+              <div className="text-left">
+                <h4 className="font-bold text-gray-900 text-xs tracking-tight">{info.title}</h4>
+                <p className="text-[10px] text-gray-500 font-medium">{info.desc}</p>
+              </div>
             </div>
-            <h4 className="font-bold text-gray-900 mb-2">Quality Assured</h4>
-            <p className="text-gray-600 text-sm">
-              Every partner is vetted for quality and reliability standards
-            </p>
-          </div>
-
-          {/* Wide Selection */}
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/20 mb-4">
-              <span className="text-3xl">🎯</span>
-            </div>
-            <h4 className="font-bold text-gray-900 mb-2">Wide Selection</h4>
-            <p className="text-gray-600 text-sm">
-              Access to premium brands with diverse gift options
-            </p>
-          </div>
-
-          {/* Best Prices */}
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 mb-4">
-              <span className="text-3xl">💰</span>
-            </div>
-            <h4 className="font-bold text-gray-900 mb-2">Best Prices</h4>
-            <p className="text-gray-600 text-sm">
-              Competitive pricing thanks to our direct partnerships
-            </p>
-          </div>
+          ))}
         </motion.div>
 
         {/* CTA Section */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-10 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Interested in a partnership?
-          </h3>
-          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300">
-            Contact Sales Team
+          <button className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary pb-1 transition-all">
+            Partner With Us
+            <span className="inline-block">→</span>
           </button>
         </motion.div>
       </div>

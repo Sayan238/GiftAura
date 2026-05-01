@@ -69,42 +69,42 @@ const itemVariants = {
 
 export default function PremiumCollections() {
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
       {/* Background decorations */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 80, repeat: Infinity }}
-        className="absolute -top-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10"
+        className="absolute -top-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl -z-10"
       />
       <motion.div
         animate={{ rotate: -360 }}
         transition={{ duration: 100, repeat: Infinity }}
-        className="absolute -bottom-40 -right-40 w-96 h-96 bg-secondary/5 rounded-full blur-3xl -z-10"
+        className="absolute -bottom-40 -right-40 w-80 h-80 bg-secondary/5 rounded-full blur-3xl -z-10"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-bold text-sm mb-6">
+          <span className="inline-block bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full font-black text-[10px] uppercase tracking-widest mb-4">
             🌟 Premium Collections
           </span>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Curated For Every <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Occasion</span>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-2 tracking-tighter">
+            Curated For Every <span className="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Occasion</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-500 max-w-xl mx-auto font-medium">
             Specially designed collections to make every moment memorable
           </p>
         </motion.div>
 
         {/* Collections Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -114,80 +114,71 @@ export default function PremiumCollections() {
             <motion.div
               key={collection.id}
               variants={itemVariants}
-              whileHover={{ y: -12 }}
+              whileHover={{ y: -6 }}
               className="group"
             >
-              <div className="relative h-full rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100">
+              <div className="relative h-full rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 bg-white">
                 {/* Image Container */}
-                <div className="relative h-64 overflow-hidden bg-gray-200">
+                <div className="relative h-48 overflow-hidden bg-gray-100">
                   <img
                     src={collection.image}
                     alt={collection.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
 
-                  {/* Overlay */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    className={`absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50 flex items-end p-6 transition-all`}
-                  >
-                    <div className="w-full">
-                      <p className="text-white text-sm font-bold mb-2">
-                        {collection.icon} {collection.name}
-                      </p>
-                    </div>
-                  </motion.div>
-
                   {/* Badge */}
                   <motion.div
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    className={`absolute top-4 right-4 bg-gradient-to-br ${collection.gradient} text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg`}
+                    className={`absolute top-3 right-3 bg-gradient-to-br ${collection.gradient} text-white px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-md`}
                   >
                     Premium
                   </motion.div>
                 </div>
 
                 {/* Content */}
-                <div className="bg-white p-6">
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                    {collection.name}
-                  </h3>
+                <div className="p-4 flex flex-col justify-between h-[calc(100%-12rem)]">
+                  <div>
+                    {/* Title */}
+                    <h3 className="text-sm md:text-base font-black text-gray-900 mb-1 group-hover:text-primary transition-colors leading-tight">
+                      {collection.name}
+                    </h3>
 
-                  {/* Description */}
-                  <p className="text-sm text-gray-600 mb-4">
-                    {collection.description}
-                  </p>
+                    {/* Description */}
+                    <p className="text-[11px] text-gray-500 mb-2 line-clamp-1 font-medium">
+                      {collection.description}
+                    </p>
 
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
+                    {/* Rating */}
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="h-2.5 w-2.5 fill-yellow-400 text-yellow-400"
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[10px] font-bold text-gray-900">{collection.rating}</span>
                     </div>
-                    <span className="text-sm font-bold text-gray-900">{collection.rating}</span>
                   </div>
 
-                  {/* Price */}
-                  <p className="text-lg font-black text-primary mb-4">
-                    {collection.price}
-                  </p>
+                  <div>
+                    {/* Price */}
+                    <p className="text-xs md:text-sm font-black text-primary mb-3">
+                      {collection.price}
+                    </p>
 
-                  {/* CTA */}
-                  <motion.button
-                    whileHover={{ x: 4 }}
-                    className="flex items-center gap-2 text-primary font-bold group-hover:text-secondary transition-colors"
-                  >
-                    <span>Shop Collection</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </motion.button>
+                    {/* CTA */}
+                    <motion.button
+                      whileHover={{ x: 4 }}
+                      className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary group-hover:text-secondary transition-colors"
+                    >
+                      <span>Shop Collection</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </motion.button>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -196,18 +187,18 @@ export default function PremiumCollections() {
 
         {/* Bottom CTA */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-12 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-sm text-gray-500 mb-4 font-medium">
             Looking for something specific? Browse our complete collection
           </p>
-          <Link href="/collections" className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300">
+          <Link href="/collections" className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary pb-1 transition-all">
             All Collections
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </motion.div>
       </div>
