@@ -155,7 +155,7 @@ export default function DealsPage() {
           {discountedProducts.map((product) => (
             <ProductCard key={product.id} product={{
               ...product,
-              reviews: product.reviewCount // Mapping products.ts reviewCount to ProductCard reviews
+              reviewCount: product.reviewCount 
             }} />
           ))}
         </div>

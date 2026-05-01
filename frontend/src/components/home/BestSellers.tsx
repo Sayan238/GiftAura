@@ -41,7 +41,7 @@ const itemVariants = {
       damping: 30
     },
   },
-};
+} as const;
 
 export default function BestSellers() {
   const { addToCart } = useCart();

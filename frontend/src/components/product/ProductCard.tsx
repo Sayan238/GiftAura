@@ -15,7 +15,7 @@ interface ProductCardProps {
     price: number;
     originalPrice?: number;
     rating: number;
-    reviews: number;
+    reviewCount?: number;
     image: string;
     discount?: number;
     isNew?: boolean;
@@ -152,7 +152,7 @@ function ProductCard({ product }: ProductCardProps) {
               />
             ))}
           </div>
-          <span className="text-[11px] text-gray-400 font-bold">({product.reviews})</span>
+          <span className="text-[11px] text-gray-400 font-bold">({product.reviewCount || 0})</span>
         </div>
         
         <div className="mt-auto">

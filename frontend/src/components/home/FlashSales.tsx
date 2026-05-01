@@ -151,7 +151,7 @@ export default function FlashSales() {
         damping: 30
       },
     },
-  };
+  } as const;
 
   return (
     <section className="py-12 md:py-16 bg-gradient-to-br from-secondary/5 via-white to-primary/5 relative overflow-hidden">

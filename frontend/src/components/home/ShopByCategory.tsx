@@ -75,7 +75,7 @@ const itemVariants = {
       damping: 30
     },
   },
-};
+} as const;
 
 export default function ShopByCategory() {
   return (

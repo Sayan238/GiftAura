@@ -51,10 +51,10 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       );
     }
 
-    // Map reviewCount to reviews for the ProductCard component
+    // Map reviewCount to reviewCount for the ProductCard component
     let mappedProducts = products.map(p => ({
       ...p,
-      reviews: p.reviewCount
+      reviewCount: p.reviewCount
     }));
 
     // Apply price filter
@@ -80,7 +80,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         mappedProducts.sort((a, b) => b.rating - a.rating);
         break;
       default: // popularity — sort by reviews
-        mappedProducts.sort((a, b) => b.reviews - a.reviews);
+        mappedProducts.sort((a, b) => b.reviewCount - a.reviewCount);
         break;
     }
 

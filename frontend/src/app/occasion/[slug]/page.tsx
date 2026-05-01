@@ -4,19 +4,19 @@ import { Filter, ChevronDown, SlidersHorizontal, Gift, Star } from 'lucide-react
 import ProductCard from '@/components/product/ProductCard';
 
 const BASE_PRODUCTS = [
-  { id: '1', name: 'Premium Red Roses Bouquet', price: 999, originalPrice: 1299, rating: 4.8, reviews: 124, image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-  { id: '2', name: 'Chocolate Truffle Cake', price: 850, originalPrice: 1000, rating: 4.9, reviews: 89, image: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
-  { id: '3', name: 'Personalized Name Necklace', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 210, image: 'https://images.pexels.com/photos/10983783/pexels-photo-10983783.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 25 },
-  { id: '4', name: 'Silver Hoop Earrings', price: 699, rating: 4.5, reviews: 45, image: 'https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
+  { id: '1', name: 'Premium Red Roses Bouquet', price: 999, originalPrice: 1299, rating: 4.8, reviewCount: 124, image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
+  { id: '2', name: 'Chocolate Truffle Cake', price: 850, originalPrice: 1000, rating: 4.9, reviewCount: 89, image: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
+  { id: '3', name: 'Personalized Name Necklace', price: 1499, originalPrice: 1999, rating: 4.7, reviewCount: 210, image: 'https://images.pexels.com/photos/10983783/pexels-photo-10983783.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 25 },
+  { id: '4', name: 'Silver Hoop Earrings', price: 699, rating: 4.5, reviewCount: 45, image: 'https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
 ];
 
 const SAMPLE_PRODUCTS = [
   ...BASE_PRODUCTS,
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_2', name: p.name + ' - Deluxe', price: p.price + 200, reviews: p.reviews + 10 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_3', name: p.name + ' - Premium', price: p.price + 400, reviews: p.reviews + 50 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_4', name: p.name + ' - Standard', price: p.price - 100, reviews: p.reviews + 5 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_5', name: p.name + ' - Special Edition', price: p.price + 500, reviews: p.reviews + 115 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_6', name: p.name + ' - Plus', price: p.price + 50, reviews: p.reviews + 2 })),
+  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_2', name: p.name + ' - Deluxe', price: p.price + 200, reviewCount: p.reviewCount + 10 })),
+  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_3', name: p.name + ' - Premium', price: p.price + 400, reviewCount: p.reviewCount + 50 })),
+  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_4', name: p.name + ' - Standard', price: p.price - 100, reviewCount: p.reviewCount + 5 })),
+  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_5', name: p.name + ' - Special Edition', price: p.price + 500, reviewCount: p.reviewCount + 115 })),
+  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_6', name: p.name + ' - Plus', price: p.price + 50, reviewCount: p.reviewCount + 2 })),
 ];
 
 export default function OccasionPage({ params }: { params: Promise<{ slug: string }> }) {
