@@ -370,7 +370,7 @@ export default function UserDashboard() {
                           <p className="font-bold text-gray-900 truncate">{item.name}</p>
                           <p className="text-orange-600 font-black mt-1">₹{item.price}</p>
                           <button 
-                            onClick={() => addToCart({...item, qty: 1})}
+                            onClick={() => addToCart({ ...item, id: item.id.toString() })}
                             className="w-full mt-4 bg-yellow-400 hover:bg-yellow-500 py-2 rounded-md font-bold text-xs transition-colors shadow-sm"
                           >
                             Add to Cart
