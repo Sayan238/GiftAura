@@ -132,18 +132,24 @@ export default function FlashSales() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.12,
+        delayChildren: 0.15,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 25, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6 },
+      scale: 1,
+      transition: { 
+        duration: 0.5,
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      },
     },
   };
 
@@ -271,9 +277,9 @@ export default function FlashSales() {
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <Link href="/flash-sale" className="inline-flex items-center gap-2 text-secondary hover:text-primary font-bold text-sm transition-colors border-b-2 border-secondary pb-1 uppercase tracking-widest">
+          <Link href="/deals" className="inline-flex items-center gap-2 text-secondary hover:text-primary font-bold text-sm transition-colors border-b-2 border-secondary pb-1 uppercase tracking-widest">
             <Zap className="h-4 w-4" />
-            View All Flash Deals
+            View All Deals
           </Link>
         </motion.div>
       </div>

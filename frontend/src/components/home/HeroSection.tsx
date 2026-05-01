@@ -52,19 +52,40 @@ export default function HeroSection() {
       <div className="max-w-[1300px] mx-auto px-4 py-3">
         {/* Banner Carousel */}
         <div className="relative rounded-2xl overflow-hidden shadow-lg h-[260px] md:h-[360px] bg-[#1a1a1a] group">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <motion.div 
+              animate={{ 
+                y: [0, -20, 0],
+                x: [0, 10, 0],
+                rotate: [0, 5, 0]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-10 right-[10%] w-32 h-32 bg-secondary/10 rounded-full blur-2xl"
+            />
+            <motion.div 
+              animate={{ 
+                y: [0, 25, 0],
+                x: [0, -15, 0]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute bottom-10 left-[5%] w-48 h-48 bg-primary/20 rounded-full blur-3xl"
+            />
+          </div>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 1.2 }}
               className="absolute inset-0 bg-[#121212]"
             >
               <img 
                 src={SLIDES[current].image} 
                 alt="Luxury Gifting" 
-                className="w-full h-full object-cover opacity-60 transition-opacity duration-1000"
+                className="w-full h-full object-cover opacity-60 transition-transform duration-[10000ms] ease-linear scale-100 group-hover:scale-110"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                 }}
@@ -73,18 +94,18 @@ export default function HeroSection() {
                 <div className="text-white max-w-2xl relative z-10">
 
                     <motion.div 
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: -30 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
+                      transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
                       className="flex items-center gap-2 mb-2 md:mb-4"
                     >
-                      <div className="h-4 md:h-8 w-1 bg-secondary"></div>
+                      <div className="h-4 md:h-8 w-1 bg-secondary shadow-[0_0_15px_rgba(197,160,40,0.5)]"></div>
                       <span className="text-secondary font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[9px] md:text-[10px]">{SLIDES[current].tag}</span>
                     </motion.div>
                     <motion.h2 
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
+                      initial={{ opacity: 0, y: 40, skewY: 2 }}
+                      animate={{ opacity: 1, y: 0, skewY: 0 }}
+                      transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
                       className="text-2xl md:text-[3.2rem] font-black mb-2 md:mb-3 leading-[1.1] md:leading-[0.9] tracking-tighter"
                     >
                       {SLIDES[current].title}
@@ -92,19 +113,21 @@ export default function HeroSection() {
                     <motion.p 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 0.4 }}
+                      transition={{ delay: 0.5, duration: 0.8 }}
                       className="text-xs md:text-base font-medium opacity-90 mb-4 md:mb-6 text-gray-200 max-w-lg leading-relaxed line-clamp-2 md:line-clamp-none"
                     >
                       {SLIDES[current].desc}
                     </motion.p>
                     <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 }}
+                      transition={{ delay: 0.6, type: "spring" }}
                       className="flex gap-3 md:gap-4"
                     >
-                      <Link href="/category/all" className="group bg-secondary text-black px-6 md:px-10 py-2 md:py-3 rounded-lg font-black shadow-lg hover:bg-white transition-all flex items-center justify-center gap-2 md:gap-3 text-[10px] md:text-xs">
-                        Shop Now <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-2 transition-transform"/>
+                      <Link href="/category/all" className="group bg-secondary text-black px-6 md:px-10 py-2 md:py-3 rounded-lg font-black shadow-lg hover:bg-white transition-all flex items-center justify-center gap-2 md:gap-3 text-[10px] md:text-xs relative overflow-hidden">
+                        <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-[-20deg]" />
+                        <span className="relative z-10">Shop Now</span> 
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-2 transition-transform relative z-10"/>
                       </Link>
                       <Link href="/deals" className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 md:px-10 py-2 md:py-3 rounded-lg font-black hover:bg-white/20 transition-all text-center text-[10px] md:text-xs">
                         Special Deals

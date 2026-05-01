@@ -5,9 +5,11 @@ import { User, Package, Heart, MapPin, LogOut, ChevronRight, Edit2, Grid3X3, Tra
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useWishlist } from '@/context/WishlistContext';
 
 export default function UserDashboard() {
   const { user, updateUser, logout, isAuthenticated } = useAuth();
+  const { items: wishlistItems, removeFromWishlist } = useWishlist();
   const [activeTab, setActiveTab] = useState('profile'); // Default to profile as per user request
   const [editingProfile, setEditingProfile] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
@@ -75,11 +77,6 @@ export default function UserDashboard() {
   const orders = [
     { id: 1, orderId: 'GA-847291', date: 'Oct 20, 2026', amount: 1000, status: 'delivered', items: [{ name: 'Red Roses Bouquet', qty: 1, image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=100' }] },
     { id: 2, orderId: 'GA-847292', date: 'Oct 15, 2026', amount: 2000, status: 'delivered', items: [{ name: 'Premium Cake & Flowers', qty: 1, image: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=100' }] },
-  ];
-
-  const wishlistItems = [
-    { id: 1, name: 'Pearl Stud Earrings', price: 2499, rating: 4.8, image: 'https://images.pexels.com/photos/1457801/pexels-photo-1457801.jpeg?auto=compress&cs=tinysrgb&w=500' },
-    { id: 2, name: 'Luxury Spa Gift Hamper', price: 3999, rating: 4.9, image: 'https://images.pexels.com/photos/1020585/pexels-photo-1020585.jpeg?auto=compress&cs=tinysrgb&w=500' },
   ];
 
   const addresses = [
@@ -357,28 +354,45 @@ export default function UserDashboard() {
                   className="bg-white rounded-lg p-8 border border-gray-200 shadow-sm"
                 >
                   <h2 className="text-2xl font-bold text-gray-900 mb-8 pb-6 border-b border-gray-100">Your Wishlist</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {wishlistItems.map(item => (
-                      <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden group">
-                        <div className="relative aspect-square overflow-hidden">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
-                          <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-red-500 hover:bg-white transition-colors shadow-sm">
-                            <Trash2 className="h-4 w-4" />
-                          </button>
+                  
+                  {wishlistItems.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {wishlistItems.map(item => (
+                        <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden group">
+                          <div className="relative aspect-square overflow-hidden">
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                            <button 
+                              onClick={() => removeFromWishlist(item.id)}
+                              className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-red-500 hover:bg-white transition-colors shadow-sm"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <div className="p-4">
+                            <p className="font-bold text-gray-900 truncate">{item.name}</p>
+                            <p className="text-orange-600 font-black mt-1">₹{item.price}</p>
+                            <button 
+                              onClick={() => addToCart({ ...item, id: item.id.toString() })}
+                              className="w-full mt-4 bg-yellow-400 hover:bg-yellow-500 py-2 rounded-md font-bold text-xs transition-colors shadow-sm"
+                            >
+                              Add to Cart
+                            </button>
+                          </div>
                         </div>
-                        <div className="p-4">
-                          <p className="font-bold text-gray-900 truncate">{item.name}</p>
-                          <p className="text-orange-600 font-black mt-1">₹{item.price}</p>
-                          <button 
-                            onClick={() => addToCart({ ...item, id: item.id.toString() })}
-                            className="w-full mt-4 bg-yellow-400 hover:bg-yellow-500 py-2 rounded-md font-bold text-xs transition-colors shadow-sm"
-                          >
-                            Add to Cart
-                          </button>
-                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-20">
+                      <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Heart className="h-10 w-10 text-gray-300" />
                       </div>
-                    ))}
-                  </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">Your Wishlist is Empty</h3>
+                      <p className="text-gray-500 mb-8">Save items you love to your wishlist!</p>
+                      <Link href="/" className="inline-block bg-yellow-400 hover:bg-yellow-500 px-8 py-3 rounded-md font-bold text-sm shadow-sm transition-colors">
+                        Start Shopping
+                      </Link>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

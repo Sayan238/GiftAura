@@ -37,8 +37,16 @@ export default function CategoryGrid() {
   return (
     <section className="py-10 md:py-12 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-24 h-24 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 bg-secondary/5 rounded-full translate-x-1/3 translate-y-1/3" />
+      <motion.div 
+        animate={{ y: [0, -10, 0], x: [0, 5, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-0 left-0 w-24 h-24 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2" 
+      />
+      <motion.div 
+        animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-0 right-0 w-32 h-32 bg-secondary/5 rounded-full translate-x-1/3 translate-y-1/3" 
+      />
 
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
@@ -71,22 +79,27 @@ export default function CategoryGrid() {
               <Link href={cat.link} key={cat.id}>
                 <motion.div
                   variants={itemVariants}
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -8, scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   className="group relative h-full"
                 >
                   {/* Main card */}
-                  <div className="relative bg-white rounded-xl p-3 md:p-4 border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer h-full flex flex-col items-center justify-center text-center">
+                  <div className="relative bg-white rounded-xl p-3 md:p-4 border border-gray-100 shadow-sm hover:shadow-2xl hover:border-secondary/20 transition-all duration-500 cursor-pointer h-full flex flex-col items-center justify-center text-center overflow-hidden">
+                    {/* Hover Glow Effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${cat.bgGradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500`} />
+                    
                     {/* Icon wrapper */}
                     <motion.div
-                      className={`w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br ${cat.bgGradient} flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-300 relative`}
-                      whileHover={{ rotate: 10 }}
+                      className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${cat.bgGradient} flex items-center justify-center mb-3 group-hover:shadow-[0_8px_20px_-5px_rgba(0,0,0,0.3)] transition-all duration-500 relative`}
+                      whileHover={{ rotate: 12, scale: 1.1 }}
                     >
-                      <Icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
+                      <Icon className="h-6 w-6 md:h-7 md:w-7 text-white" />
+                      {/* Shine effect on icon */}
+                      <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-[-20deg]" />
                     </motion.div>
 
                     {/* Category name */}
-                    <h3 className="font-bold text-gray-900 text-[11px] md:text-xs group-hover:text-primary transition-all duration-300 uppercase tracking-tight">
+                    <h3 className="font-bold text-gray-900 text-[11px] md:text-xs group-hover:text-primary transition-all duration-300 uppercase tracking-widest">
                       {cat.name}
                     </h3>
                   </div>
@@ -98,15 +111,21 @@ export default function CategoryGrid() {
 
         {/* Bottom CTA */}
         <motion.div
-          className="mt-8 text-center"
+          className="mt-10 text-center"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <Link href="/category/all" className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary pb-1 transition-all">
+          <Link href="/category/all" className="inline-flex items-center gap-2 text-primary hover:text-secondary font-black text-xs uppercase tracking-widest border-b-2 border-primary hover:border-secondary pb-1 transition-all group">
             View All Categories
-            <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+            <motion.span 
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="inline-block"
+            >
+              →
+            </motion.span>
           </Link>
         </motion.div>
       </div>

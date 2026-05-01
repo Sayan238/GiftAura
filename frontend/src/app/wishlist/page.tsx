@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Heart, ShoppingCart, Trash2, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
 
@@ -32,9 +33,21 @@ export default function WishlistPage() {
       </div>
 
       {items.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ staggerChildren: 0.1 }}
+        >
           {items.map((item) => (
-            <div key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group relative flex flex-col">
+            <motion.div 
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              layout
+              className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow group relative flex flex-col"
+            >
               
               <button onClick={() => removeFromWishlist(item.id)} className="absolute top-3 right-3 z-10 bg-white/90 p-2 rounded-full text-gray-400 hover:text-red-500 hover:bg-white transition-colors shadow-sm">
                 <Trash2 className="h-4 w-4" />
@@ -68,9 +81,9 @@ export default function WishlistPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
         <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center h-[50vh] flex flex-col items-center justify-center">
           <div className="bg-gray-50 w-24 h-24 rounded-full flex items-center justify-center mb-6">

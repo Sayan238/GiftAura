@@ -5,18 +5,7 @@ import { motion } from 'framer-motion';
 import ProductCard from '@/components/product/ProductCard';
 import { Search, Sliders, Filter, ChevronDown, Star } from 'lucide-react';
 
-const SAMPLE_PRODUCTS = [
-  { id: '1', name: 'Premium Red Roses Bouquet', price: 999, originalPrice: 1299, rating: 4.8, reviews: 124, image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-  { id: '2', name: 'Chocolate Truffle Cake (1kg)', price: 850, originalPrice: 1000, rating: 4.9, reviews: 89, image: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
-  { id: '3', name: 'Personalized Name Necklace', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 210, image: 'https://images.pexels.com/photos/10983783/pexels-photo-10983783.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 25 },
-  { id: '4', name: 'Silver Hoop Earrings', price: 699, rating: 4.5, reviews: 45, image: 'https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
-  { id: '5', name: 'Orchid Flower Vase', price: 1299, originalPrice: 1599, rating: 4.6, reviews: 67, image: 'https://images.pexels.com/photos/1024982/pexels-photo-1024982.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 18 },
-  { id: '6', name: 'Photo Printed Mug', price: 349, originalPrice: 499, rating: 4.4, reviews: 320, image: 'https://images.pexels.com/photos/1028714/pexels-photo-1028714.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 30 },
-  { id: '7', name: 'Red Velvet Cake', price: 950, originalPrice: 1200, rating: 4.8, reviews: 145, image: 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-  { id: '8', name: 'Fresh Fruit Cake', price: 750, originalPrice: 900, rating: 4.6, reviews: 78, image: 'https://images.pexels.com/photos/853151/pexels-photo-853151.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
-  { id: '9', name: 'Gold Pendant Necklace', price: 2999, rating: 4.9, reviews: 56, image: 'https://images.pexels.com/photos/691046/pexels-photo-691046.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
-  { id: '10', name: 'White Lilies Bouquet', price: 1199, originalPrice: 1499, rating: 4.7, reviews: 88, image: 'https://images.pexels.com/photos/56866/garden-rose-red-pink-56866.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-];
+import { PRODUCTS } from '@/data/products';
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -40,7 +29,7 @@ function SearchResults() {
     return false;
   };
 
-  let filteredProducts = SAMPLE_PRODUCTS.filter(product => isMatch(product.name, query));
+  let filteredProducts = PRODUCTS.filter(product => isMatch(product.name, query));
 
   // Apply price filter
   filteredProducts = filteredProducts.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);

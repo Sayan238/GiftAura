@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Star, Truck, Shield, Heart, Share2, Minus, Plus } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
+import { useWishlist } from '@/context/WishlistContext';
+
 const PRODUCT = {
   id: '1',
   name: 'Premium Red Roses Bouquet with Truffle Cake',
@@ -26,8 +28,25 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const resolvedParams = React.use(params);
   const router = useRouter();
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [qty, setQty] = useState(1);
   const [pincode, setPincode] = useState('');
+
+  const wishlisted = isInWishlist(PRODUCT.id);
+
+  const handleToggleWishlist = () => {
+    if (wishlisted) {
+      removeFromWishlist(PRODUCT.id);
+    } else {
+      addToWishlist({
+        id: PRODUCT.id,
+        name: PRODUCT.name,
+        price: PRODUCT.price,
+        originalPrice: PRODUCT.originalPrice,
+        image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=200',
+      });
+    }
+  };
 
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
@@ -61,9 +80,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           <div className="space-y-4">
             <div className="relative aspect-square bg-gray-100 rounded-2xl overflow-hidden group shadow-inner">
               <img src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Product Main" className="w-full h-full object-cover" />
-              <Link href="/account" className="absolute top-4 right-4 bg-white/90 p-3 rounded-full hover:text-secondary hover:bg-white shadow-sm transition-colors z-10 flex items-center justify-center">
-                <Heart className="h-5 w-5" />
-              </Link>
+              <button 
+                onClick={handleToggleWishlist}
+                className={`absolute top-4 right-4 p-3 rounded-full shadow-sm transition-all z-10 flex items-center justify-center ${
+                  wishlisted 
+                    ? 'bg-rose-500 text-white' 
+                    : 'bg-white/90 text-gray-400 hover:text-rose-500 hover:bg-white'
+                }`}
+              >
+                <Heart className={`h-5 w-5 ${wishlisted ? 'fill-current' : ''}`} />
+              </button>
             </div>
             <div className="grid grid-cols-4 gap-4">
               {[

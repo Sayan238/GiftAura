@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, ShoppingBag, User, Heart, Menu, X, ChevronDown, Sparkles, ArrowRight } from 'lucide-react';
+import SearchDropdown from '@/components/search/SearchDropdown';
+import { PRODUCTS } from '@/data/products';
 
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -72,27 +74,28 @@ export default function Navbar() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
 
-  // Fetch dynamic suggestions from backend
+  // Fetch dynamic suggestions from local PRODUCTS or fallback to backend
   React.useEffect(() => {
-    const fetchSuggestions = async () => {
+    const fetchSuggestions = () => {
       if (searchQuery.length < 2) {
-        setSuggestions([]);
+        // Show featured/recommended when empty or short
+        const recommended = PRODUCTS.filter(p => p.isBestseller || p.isPremium).slice(0, 6);
+        setSuggestions(recommended);
         return;
       }
-      try {
-        const response = await fetch(`http://localhost:5000/api/products?keyword=${searchQuery}`);
-        const data = await response.json();
-        // Extract unique product names or categories
-        const results = data.map((p: any) => p.name).slice(0, 8);
-        setSuggestions(results);
-      } catch (error) {
-        console.error('Error fetching suggestions:', error);
-      }
+      
+      const filtered = PRODUCTS.filter(p => 
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
+      ).slice(0, 6);
+      
+      setSuggestions(filtered);
     };
 
-    const debounce = setTimeout(fetchSuggestions, 300);
+    const debounce = setTimeout(fetchSuggestions, 150);
     return () => clearTimeout(debounce);
   }, [searchQuery]);
 
@@ -113,6 +116,19 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Search Overlay - Closes suggestions when clicking outside */}
+      <AnimatePresence>
+        {showSuggestions && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowSuggestions(false)}
+            className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[9998]"
+          />
+        )}
+      </AnimatePresence>
+
       <div className="fixed w-full z-[9999] top-0 shadow-2xl">
         {/* Main Header */}
         <nav className="bg-[#121212] text-white border-b border-white/5 py-3 relative">
@@ -213,10 +229,22 @@ export default function Navbar() {
                   onFocus={() => setShowSuggestions(true)}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleSearch}
-                  placeholder="Search for perfection..."
+                  placeholder="Find your perfect gift..."
                   className="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[14px] px-3 placeholder-gray-500 font-bold tracking-tight text-white"
                 />
               </div>
+
+              {/* Desktop Suggestions Dropdown */}
+              <AnimatePresence>
+                {showSuggestions && (
+                  <SearchDropdown 
+                    isVisible={showSuggestions}
+                    searchQuery={searchQuery}
+                    suggestions={suggestions}
+                    onClose={() => setShowSuggestions(false)}
+                  />
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -354,23 +382,42 @@ export default function Navbar() {
               </div>
 
               {/* Mobile Search Inside Drawer */}
-              <div className="p-6 border-b border-gray-100">
+              <div className="p-6 border-b border-gray-100 relative">
                 <div className="relative flex items-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5">
                   <Search className="h-4 w-4 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery}
+                    onFocus={() => setShowSuggestions(true)}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => {
                        if (e.key === 'Enter') {
                           setIsOpen(false);
+                          setShowSuggestions(false);
                           router.push(`/search?q=${searchQuery}`);
                        }
                     }}
-                    placeholder="Search gifts..."
+                    placeholder="Search gifts & hampers..."
                     className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm px-3 placeholder-gray-400 font-bold"
                   />
                 </div>
+
+                {/* Mobile Suggestions */}
+                <AnimatePresence>
+                  {showSuggestions && (
+                    <div className="absolute top-full left-0 right-0 z-50 px-4 pt-2">
+                      <SearchDropdown 
+                        isVisible={showSuggestions}
+                        searchQuery={searchQuery}
+                        suggestions={suggestions}
+                        onClose={() => {
+                          setShowSuggestions(false);
+                          setIsOpen(false);
+                        }}
+                      />
+                    </div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Categories */}

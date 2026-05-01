@@ -41,8 +41,8 @@ export const TESTIMONIALS: Testimonial[] = [
     name: 'Amit Singh',
     location: 'Pune',
     rating: 4.5,
-    review: 'Great quality products and excellent service. The spa hamper was exactly what I needed after a stressful week. All products are premium quality.',
-    product: 'Luxury Spa Gift Hamper',
+    review: 'Great quality products and excellent service. The Zen Bliss Retreat Kit was exactly what I needed after a stressful week. All products feel premium and soulful.',
+    product: 'Zen Bliss Personal Retreat Kit',
     avatar: '👨‍⚕️',
   },
   {

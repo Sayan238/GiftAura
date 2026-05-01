@@ -3,27 +3,9 @@ import React, { useState, useMemo } from 'react';
 import { Filter, ChevronDown, SlidersHorizontal, Star, X } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
 
-const BASE_PRODUCTS = [
-  { id: '1', name: 'Premium Red Roses Bouquet', price: 999, originalPrice: 1299, rating: 4.8, reviews: 124, image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-  { id: '2', name: 'Chocolate Truffle Cake', price: 850, originalPrice: 1000, rating: 4.9, reviews: 89, image: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
-  { id: '3', name: 'Personalized Name Necklace', price: 1499, originalPrice: 1999, rating: 4.7, reviews: 210, image: 'https://images.pexels.com/photos/10983783/pexels-photo-10983783.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 25 },
-  { id: '4', name: 'Silver Hoop Earrings', price: 699, rating: 4.5, reviews: 45, image: 'https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
-  { id: '5', name: 'Orchid Flower Vase', price: 1299, originalPrice: 1599, rating: 4.6, reviews: 67, image: 'https://images.pexels.com/photos/1024982/pexels-photo-1024982.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 18 },
-  { id: '6', name: 'Photo Printed Mug', price: 349, originalPrice: 499, rating: 4.4, reviews: 320, image: 'https://images.pexels.com/photos/1028714/pexels-photo-1028714.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 30 },
-  { id: '7', name: 'Red Velvet Cake', price: 950, originalPrice: 1200, rating: 4.8, reviews: 145, image: 'https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-  { id: '8', name: 'Fresh Fruit Cake', price: 750, originalPrice: 900, rating: 4.6, reviews: 78, image: 'https://images.pexels.com/photos/853151/pexels-photo-853151.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
-  { id: '9', name: 'Gold Pendant Necklace', price: 2999, rating: 4.9, reviews: 56, image: 'https://images.pexels.com/photos/691046/pexels-photo-691046.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
-  { id: '10', name: 'White Lilies Bouquet', price: 1199, originalPrice: 1499, rating: 4.7, reviews: 88, image: 'https://images.pexels.com/photos/56866/garden-rose-red-pink-56866.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 20 },
-  { id: '11', name: 'Luxury Spa Hamper', price: 2499, originalPrice: 2999, rating: 4.9, reviews: 412, image: 'https://images.pexels.com/photos/1020585/pexels-photo-1020585.jpeg?auto=compress&cs=tinysrgb&w=500', discount: 15 },
-  { id: '12', name: 'Customized Wooden Frame', price: 599, rating: 4.5, reviews: 150, image: 'https://images.pexels.com/photos/371285/pexels-photo-371285.jpeg?auto=compress&cs=tinysrgb&w=500', isNew: true },
-];
+import { PRODUCTS } from '@/data/products';
 
-const SAMPLE_PRODUCTS = [
-  ...BASE_PRODUCTS,
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_2', name: p.name + ' - Premium', price: p.price + 150, reviews: p.reviews + 12 })),
-  ...BASE_PRODUCTS.map(p => ({ ...p, id: p.id + '_3', name: p.name + ' - Classic', price: p.price - 50, reviews: p.reviews + 40 })),
-];
-
+// We'll filter products dynamically based on the slug in the component
 const PRICE_RANGES = [
   { label: 'Under ₹500', min: 0, max: 500 },
   { label: '₹500 - ₹1000', min: 500, max: 1000 },
@@ -56,12 +38,29 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
 
   // Filter & sort products
   const filteredAndSortedProducts = useMemo(() => {
-    let products = [...SAMPLE_PRODUCTS];
+    // Filter by category slug
+    let products = PRODUCTS.filter(p => 
+      p.category === resolvedParams.slug || 
+      (resolvedParams.slug === 'all')
+    );
+
+    // Fallback logic for specialized slugs (e.g., birthday, anniversary)
+    if (products.length === 0) {
+      products = PRODUCTS.filter(p => 
+        p.tags.some(tag => resolvedParams.slug.includes(tag.toLowerCase()))
+      );
+    }
+
+    // Map reviewCount to reviews for the ProductCard component
+    let mappedProducts = products.map(p => ({
+      ...p,
+      reviews: p.reviewCount
+    }));
 
     // Apply price filter
     if (selectedPriceRanges.length > 0) {
       const activeRanges = PRICE_RANGES.filter(r => selectedPriceRanges.includes(r.label));
-      products = products.filter(p =>
+      mappedProducts = mappedProducts.filter(p =>
         activeRanges.some(r => p.price >= r.min && p.price < r.max)
       );
     }
@@ -69,24 +68,24 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
     // Apply sorting
     switch (sortBy) {
       case 'price-low':
-        products.sort((a, b) => a.price - b.price);
+        mappedProducts.sort((a, b) => a.price - b.price);
         break;
       case 'price-high':
-        products.sort((a, b) => b.price - a.price);
+        mappedProducts.sort((a, b) => b.price - a.price);
         break;
       case 'newest':
-        products.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+        mappedProducts.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
         break;
       case 'rating':
-        products.sort((a, b) => b.rating - a.rating);
+        mappedProducts.sort((a, b) => b.rating - a.rating);
         break;
       default: // popularity — sort by reviews
-        products.sort((a, b) => b.reviews - a.reviews);
+        mappedProducts.sort((a, b) => b.reviews - a.reviews);
         break;
     }
 
-    return products;
-  }, [sortBy, selectedPriceRanges]);
+    return mappedProducts;
+  }, [resolvedParams.slug, sortBy, selectedPriceRanges]);
 
   const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsPerPage);
   const currentProducts = filteredAndSortedProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
