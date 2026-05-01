@@ -1,16 +1,39 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Package, Heart, MapPin, LogOut, ChevronRight, Edit2, Grid3X3, Trash2, Plus, Clock, CheckCircle2, Eye } from 'lucide-react';
+import { User, Package, Heart, MapPin, LogOut, ChevronRight, Edit2, Grid3X3, Trash2, Plus, Clock, CheckCircle2, Eye, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function UserDashboard() {
-  const [activeTab, setActiveTab] = useState('orders');
+  const { user, updateUser, logout, isAuthenticated } = useAuth();
+  const [activeTab, setActiveTab] = useState('profile'); // Default to profile as per user request
   const [editingProfile, setEditingProfile] = useState(false);
   const [showAddAddress, setShowAddAddress] = useState(false);
   const { addToCart } = useCart();
   const router = useRouter();
+
+  // Initialize from context if available
+  const [userData, setUserData] = useState({
+    firstName: user?.name.split(' ')[0] || 'John',
+    lastName: user?.name.split(' ')[1] || 'Doe',
+    email: user?.email || 'john.doe@example.com',
+    phone: '+91 9876543210',
+    dob: '1995-05-15'
+  });
+
+  // Sync state when user changes (e.g. on login)
+  React.useEffect(() => {
+    if (user) {
+      setUserData(prev => ({
+        ...prev,
+        firstName: user.name.split(' ')[0] || prev.firstName,
+        lastName: user.name.split(' ')[1] || prev.lastName,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
 
   const handleBuyAgain = (item: any) => {
     addToCart({
@@ -21,48 +44,18 @@ export default function UserDashboard() {
     });
     router.push('/cart');
   };
-  
-  // Real state for user profile
-  const [userData, setUserData] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+91 9876543210',
-    dob: '1995-05-15'
-  });
 
   const [loading, setLoading] = useState(false);
 
   const handleProfileUpdate = async () => {
     setLoading(true);
-    try {
-      const token = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')!).token : null;
-      const response = await fetch('http://localhost:5000/api/users/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          name: `${userData.firstName} ${userData.lastName}`,
-          email: userData.email,
-          phone: userData.phone,
-          dob: userData.dob
-        })
-      });
-
-      if (response.ok) {
-        setEditingProfile(false);
-        alert('Profile updated successfully!');
-      } else {
-        alert('Failed to update profile');
-      }
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('An error occurred');
-    } finally {
+    // Temporary mock success since we are in placeholder mode
+    setTimeout(() => {
+      const fullName = `${userData.firstName} ${userData.lastName}`.trim();
+      updateUser({ name: fullName });
+      setEditingProfile(false);
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const containerVariants = {
@@ -125,12 +118,12 @@ export default function UserDashboard() {
             <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm sticky top-28">
               {/* Profile Card */}
               <div className="flex items-center space-x-4 border-b border-gray-100 pb-6 mb-6">
-                <div className="w-14 h-14 bg-[#232f3e] text-white rounded-full flex items-center justify-center font-bold text-xl">
+                <div className="w-14 h-14 bg-[#232f3e] text-white rounded-full flex items-center justify-center font-bold text-xl uppercase">
                   {userData.firstName[0]}{userData.lastName[0]}
                 </div>
-                <div>
-                  <h2 className="font-bold text-gray-900 text-lg">{userData.firstName} {userData.lastName}</h2>
-                  <p className="text-xs text-gray-500">{userData.email}</p>
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-bold text-gray-900 text-lg truncate">{userData.firstName} {userData.lastName}</h2>
+                  <p className="text-xs text-gray-500 truncate">{userData.email}</p>
                 </div>
               </div>
 
@@ -158,7 +151,13 @@ export default function UserDashboard() {
               </nav>
 
               {/* Logout */}
-              <button className="w-full flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors font-medium">
+              <button 
+                onClick={() => {
+                  logout();
+                  router.push('/');
+                }}
+                className="w-full flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors font-medium"
+              >
                 <LogOut className="h-5 w-5" />
                 <span>Sign Out</span>
               </button>
@@ -250,7 +249,7 @@ export default function UserDashboard() {
                           disabled={!editingProfile}
                           value={userData.firstName}
                           onChange={(e) => setUserData({...userData, firstName: e.target.value})}
-                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
+                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500 font-medium"
                         />
                       </div>
                       <div>
@@ -260,7 +259,7 @@ export default function UserDashboard() {
                           disabled={!editingProfile}
                           value={userData.lastName}
                           onChange={(e) => setUserData({...userData, lastName: e.target.value})}
-                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
+                          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500 font-medium"
                         />
                       </div>
                     </div>
@@ -271,7 +270,7 @@ export default function UserDashboard() {
                         type="email"
                         disabled
                         value={userData.email}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 bg-gray-50 text-gray-500 cursor-not-allowed"
+                        className="w-full px-4 py-2 rounded-md border border-gray-300 bg-gray-50 text-gray-500 cursor-not-allowed font-medium"
                       />
                     </div>
 
@@ -282,7 +281,7 @@ export default function UserDashboard() {
                         disabled={!editingProfile}
                         value={userData.phone}
                         onChange={(e) => setUserData({...userData, phone: e.target.value})}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
+                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500 font-medium"
                       />
                     </div>
 
@@ -293,7 +292,7 @@ export default function UserDashboard() {
                         disabled={!editingProfile}
                         value={userData.dob}
                         onChange={(e) => setUserData({...userData, dob: e.target.value})}
-                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500"
+                        className="w-full px-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all disabled:bg-gray-50 disabled:text-gray-500 font-medium"
                       />
                     </div>
 
@@ -318,7 +317,6 @@ export default function UserDashboard() {
                 </motion.div>
               )}
               
-              {/* Other tabs follow similar clean Amazon style */}
               {activeTab === 'addresses' && (
                 <motion.div
                   key="addresses"
@@ -352,6 +350,37 @@ export default function UserDashboard() {
                   </div>
                 </motion.div>
               )}
+
+              {activeTab === 'wishlist' && (
+                <motion.div
+                  key="wishlist"
+                  className="bg-white rounded-lg p-8 border border-gray-200 shadow-sm"
+                >
+                  <h2 className="text-2xl font-bold text-gray-900 mb-8 pb-6 border-b border-gray-100">Your Wishlist</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {wishlistItems.map(item => (
+                      <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden group">
+                        <div className="relative aspect-square overflow-hidden">
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                          <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-red-500 hover:bg-white transition-colors shadow-sm">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="p-4">
+                          <p className="font-bold text-gray-900 truncate">{item.name}</p>
+                          <p className="text-orange-600 font-black mt-1">₹{item.price}</p>
+                          <button 
+                            onClick={() => addToCart({...item, qty: 1})}
+                            className="w-full mt-4 bg-yellow-400 hover:bg-yellow-500 py-2 rounded-md font-bold text-xs transition-colors shadow-sm"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
         </div>
@@ -359,4 +388,3 @@ export default function UserDashboard() {
     </div>
   );
 }
-

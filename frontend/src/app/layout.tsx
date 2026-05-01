@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/common/BackToTop';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
+import { AuthProvider } from '@/context/AuthContext';
 
 export const metadata: Metadata = {
   title: 'GiftAura | Premium Gifting Platform',
@@ -19,16 +20,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
-        <CartProvider>
-          <WishlistProvider>
-            <Navbar />
-            <main className="flex-grow pt-[160px]">
-              {children}
-            </main>
-            <Footer />
-            <BackToTop />
-          </WishlistProvider>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <Navbar />
+              <main className="flex-grow pt-[160px]">
+                {children}
+              </main>
+              <Footer />
+              <BackToTop />
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

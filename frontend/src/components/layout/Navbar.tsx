@@ -8,6 +8,7 @@ import { Search, ShoppingBag, User, Heart, Menu, X, ChevronDown, Sparkles, Arrow
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import { useAuth } from '@/context/AuthContext';
 
 const CATEGORIES = [
   { 
@@ -66,6 +67,7 @@ export default function Navbar() {
   const router = useRouter();
   const { totalItems } = useCart();
   const { totalItems: wishlistTotal } = useWishlist();
+  const { user, logout, isAuthenticated } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -234,7 +236,7 @@ export default function Navbar() {
             >
               <button className="flex items-center gap-2 text-[11px] md:text-xs font-bold hover:text-secondary transition-colors px-2.5 md:px-3.5 py-1.5 bg-white/5 rounded-full border border-white/10">
                 <User className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">Account</span>
+                <span className="hidden md:inline">{isAuthenticated ? `Hi, ${user?.name}` : 'Account'}</span>
               </button>
               
               <AnimatePresence>
@@ -246,12 +248,33 @@ export default function Navbar() {
                     className="absolute top-full right-0 mt-2 w-64 bg-[#1a1a1a] text-white shadow-2xl rounded-2xl overflow-hidden border border-white/10 z-[10001]"
                   >
                     <div className="p-6 grid grid-cols-1 gap-4 text-sm">
-                       <Link href="/login" className="bg-secondary text-black text-center py-3 rounded-xl font-black hover:bg-secondary/90 transition-all">Sign In</Link>
+                       {!isAuthenticated ? (
+                         <Link href="/login" className="bg-secondary text-black text-center py-3 rounded-xl font-black hover:bg-secondary/90 transition-all">Sign In</Link>
+                       ) : (
+                         <div className="text-center pb-2">
+                           <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black mb-1">Logged in as</p>
+                           <p className="font-black text-secondary truncate">{user?.email}</p>
+                         </div>
+                       )}
                        <div className="h-px bg-white/10 my-2"></div>
                        <Link href="/account" className="flex items-center gap-3 hover:text-secondary transition-colors"><User className="h-4 w-4 text-gray-500"/> My Profile</Link>
                        <Link href="/orders" className="flex items-center gap-3 hover:text-secondary transition-colors"><ShoppingBag className="h-4 w-4 text-gray-500"/> Your Orders</Link>
                        <Link href="/track" className="flex items-center gap-3 hover:text-secondary transition-colors"><Sparkles className="h-4 w-4 text-gray-500"/> Track Order</Link>
                        <Link href="/wishlist" className="flex items-center gap-3 hover:text-secondary transition-colors"><Heart className="h-4 w-4 text-gray-500"/> Wishlist</Link>
+                       {isAuthenticated && (
+                         <>
+                           <div className="h-px bg-white/10 my-2"></div>
+                           <button 
+                             onClick={() => {
+                               logout();
+                               router.push('/');
+                             }}
+                             className="text-left text-rose-500 hover:text-rose-400 font-bold transition-colors flex items-center gap-3"
+                           >
+                             <X className="h-4 w-4" /> Sign Out
+                           </button>
+                         </>
+                       )}
                     </div>
                   </motion.div>
                 )}
@@ -324,8 +347,8 @@ export default function Navbar() {
                     <User className="h-6 w-6 text-secondary" />
                   </div>
                   <div>
-                    <h2 className="font-black text-lg">Hello, Sign In</h2>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-widest">Premium Gifting</p>
+                    <h2 className="font-black text-lg">{isAuthenticated ? `Hi, ${user?.name}` : 'Hello, Sign In'}</h2>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-widest">{isAuthenticated ? user?.email : 'Premium Gifting'}</p>
                   </div>
                 </div>
               </div>
@@ -380,7 +403,20 @@ export default function Navbar() {
 
               {/* Bottom Actions */}
               <div className="p-6 bg-gray-50 mt-auto border-t border-gray-100 space-y-4">
-                <Link href="/login" className="block w-full bg-[#121212] text-white text-center py-4 rounded-xl font-black text-sm transition-all hover:bg-black">Sign In</Link>
+                {!isAuthenticated ? (
+                  <Link href="/login" onClick={() => setIsOpen(false)} className="block w-full bg-[#121212] text-white text-center py-4 rounded-xl font-black text-sm transition-all hover:bg-black">Sign In</Link>
+                ) : (
+                  <button 
+                    onClick={() => {
+                      logout();
+                      setIsOpen(false);
+                      router.push('/');
+                    }} 
+                    className="block w-full bg-rose-500 text-white text-center py-4 rounded-xl font-black text-sm transition-all hover:bg-rose-600 shadow-lg shadow-rose-500/20"
+                  >
+                    Sign Out
+                  </button>
+                )}
                 <div className="grid grid-cols-3 gap-3">
                    <Link href="/orders" className="p-4 bg-white rounded-xl border border-gray-100 flex flex-col items-center gap-2 group">
                       <ShoppingBag className="h-5 w-5 text-gray-400 group-hover:text-secondary transition-colors" />
