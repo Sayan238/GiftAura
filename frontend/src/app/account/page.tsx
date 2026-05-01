@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Package, Heart, MapPin, LogOut, ChevronRight, Edit2, Grid3X3, Trash2, Plus, Clock, CheckCircle2, Eye, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
